@@ -8,5 +8,6 @@
   "duplicate_open_times": 0,
   "spacing_error_count": 1,
   "missing_candles_estimate": 1,
-  "ohlc_inconsistency_rows": 0
+  "ohlc_inconsistency_rows": 0,
+  "secondary_gap_repairs": []
 }
