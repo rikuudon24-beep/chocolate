@@ -14,6 +14,73 @@ LIMIT = 1000
 BASE_URL = "https://data-api.binance.vision/api/v3/klines"
 FOUR_HOURS_MS = 4 * 60 * 60 * 1000
 
+STATIC_BASE_URL = "https://finom.github.io/static-klines/api/klines/4h/BTCUSDT"
+
+
+def quarter_start(ts):
+    month = ((ts.month - 1) // 3) * 3 + 1
+    return pd.Timestamp(year=ts.year, month=month, day=1, tz="UTC")
+
+
+def repair_missing_from_secondary(df, spacing_errors):
+    """
+    Official Binance public REST data is the primary source.
+    If a single/multiple 4H gaps are detected, fetch only the affected
+    quarter(s) from the independent static-klines cache and use it solely
+    to repair missing timestamps. The repair is recorded explicitly.
+    """
+    if spacing_errors.empty:
+        return df, []
+
+    repairs = []
+    needed_times = []
+    for idx in spacing_errors.index:
+        prev_time = df.loc[idx - 1, "open_time"]
+        next_time = df.loc[idx, "open_time"]
+        t = prev_time + pd.Timedelta(hours=4)
+        while t < next_time:
+            needed_times.append(t)
+            t += pd.Timedelta(hours=4)
+
+    for q in sorted({quarter_start(t) for t in needed_times}):
+        url = f"{STATIC_BASE_URL}/{q.strftime('%Y-%m-%d')}.json"
+        response = requests.get(url, timeout=30)
+        response.raise_for_status()
+        rows = response.json()
+
+        cols = [
+            "open_time", "open", "high", "low", "close", "volume",
+            "close_time", "quote_volume", "trades",
+            "taker_base_volume", "taker_quote_volume", "ignore",
+        ]
+        sec = pd.DataFrame(rows, columns=cols)
+        if sec.empty:
+            continue
+
+        sec["open_time"] = pd.to_datetime(sec["open_time"], unit="ms", utc=True)
+        sec["close_time"] = pd.to_datetime(sec["close_time"], unit="ms", utc=True)
+        for col in ["open", "high", "low", "close", "volume"]:
+            sec[col] = pd.to_numeric(sec[col], errors="coerce")
+
+        wanted = set(needed_times)
+        sec = sec[sec["open_time"].isin(wanted)].copy()
+
+        for _, row in sec.iterrows():
+            repairs.append({
+                "open_time": row["open_time"].isoformat(),
+                "source": "finom/static-klines secondary repair",
+            })
+
+        if not sec.empty:
+            df = pd.concat([df, sec], ignore_index=True)
+            df = (
+                df.drop_duplicates("open_time", keep="first")
+                .sort_values("open_time")
+                .reset_index(drop=True)
+            )
+
+    return df, repairs
+
 ROOT = Path(__file__).resolve().parents[1]
 RESULTS = ROOT / "results"
 RESULTS.mkdir(exist_ok=True)
@@ -232,6 +299,10 @@ def extract_events(df):
 def main():
     df = fetch_klines()
     audit, spacing_errors = audit_data(df)
+    gap_repairs = []
+    if not spacing_errors.empty:
+        df, gap_repairs = repair_missing_from_secondary(df, spacing_errors)
+        audit, spacing_errors = audit_data(df)
 
     if audit["duplicate_open_times"] != 0:
         raise RuntimeError("Duplicate open times detected.")
@@ -245,6 +316,7 @@ def main():
     df = add_indicators(df)
     events = extract_events(df)
 
+    audit["secondary_gap_repairs"] = gap_repairs
     with open(RESULTS / "audit_summary.json", "w", encoding="utf-8") as f:
         json.dump(audit, f, ensure_ascii=False, indent=2)
 
