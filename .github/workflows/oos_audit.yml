@@ -28,6 +28,9 @@ jobs:
       - name: Run audit
         run: python src/audit_oos.py
 
+      - name: Run exit research
+        run: python src/exit_research.py
+
       - name: Save results
         run: |
           git config user.name "github-actions[bot]"
