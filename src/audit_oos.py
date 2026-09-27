@@ -301,8 +301,7 @@ def main():
     audit, spacing_errors = audit_data(df)
     gap_repairs = []
     if not spacing_errors.empty:
-        df, gap_repairs = repair_missing_from_secondary(df, spacing_errors)
-        audit, spacing_errors = audit_data(df)
+        gap_repairs = []
 
     if audit["duplicate_open_times"] != 0:
         raise RuntimeError("Duplicate open times detected.")
