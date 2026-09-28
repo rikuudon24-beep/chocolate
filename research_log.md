@@ -95,3 +95,10 @@ Previous exploratory pipelines produced 85 and 113 events. These are provisional
 - Annual consistency is mixed: 2025 is negative at 2/3/6 candles while 2023/2024/2026 are generally positive at several horizons. Therefore the effect is not yet demonstrated as stable across regimes.
 - At 0.05% round-trip cost, aggregate average return mechanically falls by 0.05 percentage points for every horizon; the 6-candle aggregate becomes slightly negative.
 - OOS-009 does not justify selecting a particular exit horizon. Exit choice remains HOLD pending a pre-specified independent decision rule and further validation.
+
+
+## OOS-010 checkpoint — 2026-09-28
+- Added fixed-spec uncertainty analysis for the OOS-009 validation events. This does not alter the entry rule, exit rule, or validation cutoff.
+- Event bootstrap uses 10,000 deterministic resamples per horizon/cost level; a separate year-block bootstrap is reported at 0.05% round-trip cost to show sensitivity to year-level dependence.
+- Confidence intervals are descriptive uncertainty ranges, not proof of future performance and not a basis for selecting a horizon after the fact.
+- The analysis is intentionally run after the fixed walk-forward outputs and cannot modify the frozen event set or parameters.
