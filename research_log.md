@@ -111,3 +111,11 @@ Previous exploratory pipelines produced 85 and 113 events. These are provisional
 - This is intended to become the genuinely untouched validation stream as new closed BTCUSDT 4H candles arrive.
 
 - Automation note — after the prior run completed, the branch was re-triggered so the current workflow definition (including uncertainty and forward-shadow stages) can execute against the settled main branch.
+
+
+## OOS-010 results — 2026-09-28
+- The fixed-spec bootstrap completed successfully on the same 53 validation events. At 0.05% round-trip cost, the 95% event-bootstrap CI for average return crosses zero for every tested horizon: 2 candles [-0.263%, +0.680%], 3 [-0.186%, +0.855%], 6 [-0.712%, +0.617%], 12 [-0.332%, +1.779%].
+- Therefore the positive point estimates at 2/3/12 candles are not statistically decisive in this small validation sample; uncertainty remains material.
+- The year-block bootstrap at 0.05% gives positive average-return intervals for all four horizons, but it is based on only four validation years and should be treated as descriptive, not confirmatory.
+- Untouched forward-shadow scan found 0 events at or after the frozen 2026-09-27 20:00 UTC cutoff and 0 matured horizon returns. This is expected immediately after the cutoff and is not evidence for or against the rule.
+- OOS-010 strengthens the HOLD decision: no exit horizon is selected and no live deployment is authorized by this research stage.
