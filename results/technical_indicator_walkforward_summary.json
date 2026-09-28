@@ -1,0 +1,59 @@
+{
+  "purpose": "Fixed semantic-threshold walk-forward validation; thresholds pre-registered, no optimization or promotion.",
+  "events": 95,
+  "cost": 0.001,
+  "rules": [
+    "vol_z>=1",
+    "vol_z>=2",
+    "macd_hist>=0",
+    "macd_hist<0",
+    "di_spread>=0",
+    "di_spread<=-5",
+    "adx>=20",
+    "adx>=25",
+    "ema20_dist>=0",
+    "ema20_dist<0",
+    "ema20_slope12>=0",
+    "ema20_slope12<0",
+    "ema200_dist>=0",
+    "ema200_dist<0",
+    "ema200_slope12>=0",
+    "ema200_slope12<0",
+    "stoch<=20",
+    "stoch>=50",
+    "mfi<=30",
+    "mfi>=50",
+    "obv_z>=1",
+    "obv_z<=-1",
+    "vwap_dist>=0",
+    "vwap_dist<0",
+    "bb_width<=0.05",
+    "bb_width>=0.12",
+    "body<=0.3",
+    "body>=0.7",
+    "lower_wick>=0.5",
+    "close_loc>=0.5"
+  ],
+  "splits": [
+    [
+      2020,
+      2022,
+      2023
+    ],
+    [
+      2020,
+      2023,
+      2024
+    ],
+    [
+      2020,
+      2024,
+      2025
+    ],
+    [
+      2020,
+      2025,
+      2026
+    ]
+  ]
+}
