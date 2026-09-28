@@ -7,7 +7,28 @@
     6,
     12
   ],
-  "note": "Every feature threshold is tested in both <= and >= directions. Selection is train-only; validation is untouched. No automatic promotion.",
+  "eligible_features": [
+    "rsi_reentry",
+    "rsi_min",
+    "rsi_confirm",
+    "bb_z_reentry",
+    "bb_width_reentry",
+    "atr_pct_reentry",
+    "ret4_reentry",
+    "ret12_reentry",
+    "ret24_reentry",
+    "vol_z20_reentry"
+  ],
+  "excluded_features": [
+    "bb_z_entry",
+    "bb_width_entry",
+    "atr_pct_entry",
+    "ret4_entry",
+    "ret12_entry",
+    "ret24_entry",
+    "vol_z20_entry"
+  ],
+  "note": "Entry-candle close-derived features are excluded because entry is at that candle's open. Selection is train-only; validation is untouched. No automatic promotion.",
   "splits": [
     "2020-2022 -> 2023-2023",
     "2020-2023 -> 2024-2024",
@@ -18,16 +39,6 @@
     {
       "split": "2020-2022 -> 2023-2023",
       "rank": 1,
-      "feature": "ret4_entry",
-      "op": ">=",
-      "threshold": 0.0,
-      "train_n": 18,
-      "train_net_avg": 0.010366956279585327,
-      "train_dd": -0.007717732182753734
-    },
-    {
-      "split": "2020-2022 -> 2023-2023",
-      "rank": 2,
       "feature": "rsi_reentry",
       "op": "<=",
       "threshold": 35.0,
@@ -37,7 +48,7 @@
     },
     {
       "split": "2020-2022 -> 2023-2023",
-      "rank": 3,
+      "rank": 2,
       "feature": "rsi_min",
       "op": "<=",
       "threshold": 35.0,
@@ -47,7 +58,7 @@
     },
     {
       "split": "2020-2022 -> 2023-2023",
-      "rank": 4,
+      "rank": 3,
       "feature": "bb_width_reentry",
       "op": ">=",
       "threshold": 0.12,
@@ -57,7 +68,7 @@
     },
     {
       "split": "2020-2022 -> 2023-2023",
-      "rank": 5,
+      "rank": 4,
       "feature": "ret24_reentry",
       "op": "<=",
       "threshold": -0.04,
@@ -67,27 +78,7 @@
     },
     {
       "split": "2020-2022 -> 2023-2023",
-      "rank": 6,
-      "feature": "ret24_entry",
-      "op": ">=",
-      "threshold": 0.0,
-      "train_n": 23,
-      "train_net_avg": 0.0008039031464991901,
-      "train_dd": -0.05612928376247561
-    },
-    {
-      "split": "2020-2022 -> 2023-2023",
-      "rank": 7,
-      "feature": "ret4_entry",
-      "op": ">=",
-      "threshold": -0.01,
-      "train_n": 34,
-      "train_net_avg": 0.0005578891000298097,
-      "train_dd": -0.08211886341962193
-    },
-    {
-      "split": "2020-2022 -> 2023-2023",
-      "rank": 8,
+      "rank": 5,
       "feature": "vol_z20_reentry",
       "op": ">=",
       "threshold": 0.0,
@@ -97,7 +88,7 @@
     },
     {
       "split": "2020-2022 -> 2023-2023",
-      "rank": 9,
+      "rank": 6,
       "feature": "rsi_confirm",
       "op": "<=",
       "threshold": 40.0,
@@ -107,7 +98,7 @@
     },
     {
       "split": "2020-2022 -> 2023-2023",
-      "rank": 10,
+      "rank": 7,
       "feature": "rsi_confirm",
       "op": ">=",
       "threshold": 35.0,
@@ -116,18 +107,38 @@
       "train_dd": -0.10892389320112084
     },
     {
-      "split": "2020-2023 -> 2024-2024",
-      "rank": 1,
-      "feature": "ret4_entry",
+      "split": "2020-2022 -> 2023-2023",
+      "rank": 8,
+      "feature": "atr_pct_reentry",
+      "op": "<=",
+      "threshold": 0.02,
+      "train_n": 17,
+      "train_net_avg": -0.0001276530278025719,
+      "train_dd": -0.022926248919975856
+    },
+    {
+      "split": "2020-2022 -> 2023-2023",
+      "rank": 9,
+      "feature": "rsi_reentry",
+      "op": "<=",
+      "threshold": 38.0,
+      "train_n": 30,
+      "train_net_avg": -0.00027012198390315167,
+      "train_dd": -0.057040456380620386
+    },
+    {
+      "split": "2020-2022 -> 2023-2023",
+      "rank": 10,
+      "feature": "rsi_reentry",
       "op": ">=",
-      "threshold": 0.0,
-      "train_n": 27,
-      "train_net_avg": 0.009888432296591566,
-      "train_dd": -0.014881872531412044
+      "threshold": 30.0,
+      "train_n": 30,
+      "train_net_avg": -0.0003297021747202469,
+      "train_dd": -0.10892389320112084
     },
     {
       "split": "2020-2023 -> 2024-2024",
-      "rank": 2,
+      "rank": 1,
       "feature": "rsi_confirm",
       "op": ">=",
       "threshold": 45.0,
@@ -137,7 +148,7 @@
     },
     {
       "split": "2020-2023 -> 2024-2024",
-      "rank": 3,
+      "rank": 2,
       "feature": "vol_z20_reentry",
       "op": ">=",
       "threshold": 1.0,
@@ -147,27 +158,7 @@
     },
     {
       "split": "2020-2023 -> 2024-2024",
-      "rank": 4,
-      "feature": "vol_z20_entry",
-      "op": ">=",
-      "threshold": 0.0,
-      "train_n": 23,
-      "train_net_avg": 0.004388208870379834,
-      "train_dd": -0.02686684383508442
-    },
-    {
-      "split": "2020-2023 -> 2024-2024",
-      "rank": 5,
-      "feature": "ret24_entry",
-      "op": ">=",
-      "threshold": 0.0,
-      "train_n": 35,
-      "train_net_avg": 0.002234841476355862,
-      "train_dd": -0.05612928376247561
-    },
-    {
-      "split": "2020-2023 -> 2024-2024",
-      "rank": 6,
+      "rank": 3,
       "feature": "atr_pct_reentry",
       "op": "<=",
       "threshold": 0.02,
@@ -177,17 +168,7 @@
     },
     {
       "split": "2020-2023 -> 2024-2024",
-      "rank": 7,
-      "feature": "bb_width_entry",
-      "op": "<=",
-      "threshold": 0.05,
-      "train_n": 17,
-      "train_net_avg": 0.0019371708604260952,
-      "train_dd": -0.016791237025126082
-    },
-    {
-      "split": "2020-2023 -> 2024-2024",
-      "rank": 8,
+      "rank": 4,
       "feature": "bb_width_reentry",
       "op": "<=",
       "threshold": 0.05,
@@ -197,17 +178,7 @@
     },
     {
       "split": "2020-2023 -> 2024-2024",
-      "rank": 9,
-      "feature": "atr_pct_entry",
-      "op": "<=",
-      "threshold": 0.02,
-      "train_n": 31,
-      "train_net_avg": 0.0018556406591447119,
-      "train_dd": -0.020136895659222387
-    },
-    {
-      "split": "2020-2023 -> 2024-2024",
-      "rank": 10,
+      "rank": 5,
       "feature": "rsi_reentry",
       "op": "<=",
       "threshold": 35.0,
@@ -216,18 +187,58 @@
       "train_dd": -0.039187352011731624
     },
     {
-      "split": "2020-2024 -> 2025-2025",
-      "rank": 1,
-      "feature": "ret4_entry",
+      "split": "2020-2023 -> 2024-2024",
+      "rank": 6,
+      "feature": "rsi_confirm",
       "op": ">=",
-      "threshold": 0.0,
-      "train_n": 33,
-      "train_net_avg": 0.008577037928998579,
-      "train_dd": -0.014881872531412044
+      "threshold": 35.0,
+      "train_n": 45,
+      "train_net_avg": 0.0014383072162816113,
+      "train_dd": -0.10892389320112084
+    },
+    {
+      "split": "2020-2023 -> 2024-2024",
+      "rank": 7,
+      "feature": "rsi_reentry",
+      "op": ">=",
+      "threshold": 30.0,
+      "train_n": 42,
+      "train_net_avg": 0.0012676377802807656,
+      "train_dd": -0.10892389320112084
+    },
+    {
+      "split": "2020-2023 -> 2024-2024",
+      "rank": 8,
+      "feature": "rsi_min",
+      "op": "<=",
+      "threshold": 35.0,
+      "train_n": 24,
+      "train_net_avg": 0.0010690899504627554,
+      "train_dd": -0.039187352011731624
+    },
+    {
+      "split": "2020-2023 -> 2024-2024",
+      "rank": 9,
+      "feature": "ret12_reentry",
+      "op": "<=",
+      "threshold": -0.02,
+      "train_n": 15,
+      "train_net_avg": 0.0010355499452316813,
+      "train_dd": -0.06106826227526396
+    },
+    {
+      "split": "2020-2023 -> 2024-2024",
+      "rank": 10,
+      "feature": "bb_width_reentry",
+      "op": ">=",
+      "threshold": 0.12,
+      "train_n": 16,
+      "train_net_avg": 0.0009262805247914141,
+      "train_dd": -0.03918735201173151
     },
     {
       "split": "2020-2024 -> 2025-2025",
-      "rank": 2,
+      "rank": 1,
       "feature": "rsi_confirm",
       "op": ">=",
       "threshold": 45.0,
@@ -237,7 +248,7 @@
     },
     {
       "split": "2020-2024 -> 2025-2025",
-      "rank": 3,
+      "rank": 2,
       "feature": "vol_z20_reentry",
       "op": ">=",
       "threshold": 1.0,
@@ -247,17 +258,7 @@
     },
     {
       "split": "2020-2024 -> 2025-2025",
-      "rank": 4,
-      "feature": "vol_z20_entry",
-      "op": ">=",
-      "threshold": 0.0,
-      "train_n": 29,
-      "train_net_avg": 0.0032870400272683184,
-      "train_dd": -0.030691925017507726
-    },
-    {
-      "split": "2020-2024 -> 2025-2025",
-      "rank": 5,
+      "rank": 3,
       "feature": "vol_z20_reentry",
       "op": ">=",
       "threshold": 2.0,
@@ -267,27 +268,7 @@
     },
     {
       "split": "2020-2024 -> 2025-2025",
-      "rank": 6,
-      "feature": "ret24_entry",
-      "op": ">=",
-      "threshold": 0.0,
-      "train_n": 42,
-      "train_net_avg": 0.0019849392083581122,
-      "train_dd": -0.05612928376247561
-    },
-    {
-      "split": "2020-2024 -> 2025-2025",
-      "rank": 7,
-      "feature": "bb_width_entry",
-      "op": "<=",
-      "threshold": 0.05,
-      "train_n": 19,
-      "train_net_avg": 0.0016904862680067198,
-      "train_dd": -0.016791237025126082
-    },
-    {
-      "split": "2020-2024 -> 2025-2025",
-      "rank": 8,
+      "rank": 4,
       "feature": "bb_width_reentry",
       "op": "<=",
       "threshold": 0.05,
@@ -297,17 +278,7 @@
     },
     {
       "split": "2020-2024 -> 2025-2025",
-      "rank": 9,
-      "feature": "ret4_entry",
-      "op": ">=",
-      "threshold": -0.01,
-      "train_n": 57,
-      "train_net_avg": 0.001157403728435852,
-      "train_dd": -0.08211886341962193
-    },
-    {
-      "split": "2020-2024 -> 2025-2025",
-      "rank": 10,
+      "rank": 5,
       "feature": "atr_pct_reentry",
       "op": "<=",
       "threshold": 0.02,
@@ -316,18 +287,58 @@
       "train_dd": -0.04692855082217007
     },
     {
-      "split": "2020-2025 -> 2026-2026",
-      "rank": 1,
-      "feature": "ret4_entry",
+      "split": "2020-2024 -> 2025-2025",
+      "rank": 6,
+      "feature": "bb_width_reentry",
+      "op": "<=",
+      "threshold": 0.08,
+      "train_n": 36,
+      "train_net_avg": 0.0008014514193923328,
+      "train_dd": -0.05730725074613208
+    },
+    {
+      "split": "2020-2024 -> 2025-2025",
+      "rank": 7,
+      "feature": "rsi_confirm",
       "op": ">=",
-      "threshold": 0.0,
-      "train_n": 43,
-      "train_net_avg": 0.007397375151013908,
-      "train_dd": -0.014881872531412044
+      "threshold": 35.0,
+      "train_n": 56,
+      "train_net_avg": 0.0008504376158799071,
+      "train_dd": -0.10892389320112084
+    },
+    {
+      "split": "2020-2024 -> 2025-2025",
+      "rank": 8,
+      "feature": "rsi_reentry",
+      "op": ">=",
+      "threshold": 30.0,
+      "train_n": 52,
+      "train_net_avg": 0.0007895372717993086,
+      "train_dd": -0.10892389320112084
+    },
+    {
+      "split": "2020-2024 -> 2025-2025",
+      "rank": 9,
+      "feature": "rsi_min",
+      "op": ">=",
+      "threshold": 30.0,
+      "train_n": 49,
+      "train_net_avg": 0.000589600195512618,
+      "train_dd": -0.10892389320112084
+    },
+    {
+      "split": "2020-2024 -> 2025-2025",
+      "rank": 10,
+      "feature": "atr_pct_reentry",
+      "op": "<=",
+      "threshold": 0.03,
+      "train_n": 55,
+      "train_net_avg": 0.0002197762854783073,
+      "train_dd": -0.08194906171803884
     },
     {
       "split": "2020-2025 -> 2026-2026",
-      "rank": 2,
+      "rank": 1,
       "feature": "rsi_confirm",
       "op": ">=",
       "threshold": 45.0,
@@ -337,7 +348,7 @@
     },
     {
       "split": "2020-2025 -> 2026-2026",
-      "rank": 3,
+      "rank": 2,
       "feature": "vol_z20_reentry",
       "op": ">=",
       "threshold": 1.0,
@@ -347,17 +358,7 @@
     },
     {
       "split": "2020-2025 -> 2026-2026",
-      "rank": 4,
-      "feature": "atr_pct_entry",
-      "op": ">=",
-      "threshold": 0.03,
-      "train_n": 15,
-      "train_net_avg": 0.002415572069188292,
-      "train_dd": -0.05924935136302434
-    },
-    {
-      "split": "2020-2025 -> 2026-2026",
-      "rank": 5,
+      "rank": 3,
       "feature": "vol_z20_reentry",
       "op": ">=",
       "threshold": 2.0,
@@ -367,37 +368,7 @@
     },
     {
       "split": "2020-2025 -> 2026-2026",
-      "rank": 6,
-      "feature": "ret24_entry",
-      "op": ">=",
-      "threshold": 0.0,
-      "train_n": 51,
-      "train_net_avg": 0.001733592842983498,
-      "train_dd": -0.05612928376247561
-    },
-    {
-      "split": "2020-2025 -> 2026-2026",
-      "rank": 7,
-      "feature": "bb_width_entry",
-      "op": "<=",
-      "threshold": 0.05,
-      "train_n": 20,
-      "train_net_avg": 0.0017293824602734828,
-      "train_dd": -0.016791237025126082
-    },
-    {
-      "split": "2020-2025 -> 2026-2026",
-      "rank": 8,
-      "feature": "ret12_entry",
-      "op": ">=",
-      "threshold": 0.0,
-      "train_n": 71,
-      "train_net_avg": 0.0013848199153296426,
-      "train_dd": -0.10556148115745467
-    },
-    {
-      "split": "2020-2025 -> 2026-2026",
-      "rank": 9,
+      "rank": 4,
       "feature": "bb_width_reentry",
       "op": ">=",
       "threshold": 0.12,
@@ -407,13 +378,63 @@
     },
     {
       "split": "2020-2025 -> 2026-2026",
-      "rank": 10,
-      "feature": "ret4_entry",
+      "rank": 5,
+      "feature": "bb_width_reentry",
+      "op": "<=",
+      "threshold": 0.05,
+      "train_n": 22,
+      "train_net_avg": 0.0010242659498525602,
+      "train_dd": -0.021258491999267992
+    },
+    {
+      "split": "2020-2025 -> 2026-2026",
+      "rank": 6,
+      "feature": "ret12_reentry",
+      "op": "<=",
+      "threshold": -0.02,
+      "train_n": 27,
+      "train_net_avg": -0.00032647695758036745,
+      "train_dd": -0.06106826227526396
+    },
+    {
+      "split": "2020-2025 -> 2026-2026",
+      "rank": 7,
+      "feature": "bb_width_reentry",
+      "op": "<=",
+      "threshold": 0.08,
+      "train_n": 42,
+      "train_net_avg": -0.0004808154771387029,
+      "train_dd": -0.05730725074613208
+    },
+    {
+      "split": "2020-2025 -> 2026-2026",
+      "rank": 8,
+      "feature": "vol_z20_reentry",
       "op": ">=",
-      "threshold": -0.01,
-      "train_n": 71,
-      "train_net_avg": 0.0011757826530937677,
-      "train_dd": -0.08211886341962193
+      "threshold": 0.0,
+      "train_n": 60,
+      "train_net_avg": -0.0005660423527848245,
+      "train_dd": -0.08146577318227088
+    },
+    {
+      "split": "2020-2025 -> 2026-2026",
+      "rank": 9,
+      "feature": "rsi_confirm",
+      "op": ">=",
+      "threshold": 35.0,
+      "train_n": 69,
+      "train_net_avg": -0.0005858063433458222,
+      "train_dd": -0.10892389320112084
+    },
+    {
+      "split": "2020-2025 -> 2026-2026",
+      "rank": 10,
+      "feature": "ret24_reentry",
+      "op": "<=",
+      "threshold": -0.04,
+      "train_n": 36,
+      "train_net_avg": -0.0006068461449894676,
+      "train_dd": -0.0622212915121938
     }
   ]
 }
