@@ -59,6 +59,9 @@ jobs:
       - name: Run bidirectional rolling condition validation
         run: python src/rolling_condition_bidirectional.py
 
+      - name: Run volume-shock interaction validation
+        run: python src/rolling_volume_interaction.py
+
       - name: Run untouched forward shadow validation
         run: python src/forward_shadow.py
 
