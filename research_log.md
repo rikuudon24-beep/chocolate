@@ -23,9 +23,9 @@
 - OOS-003: 全イベント出口比較 — DONE※暫定
 - OOS-004: パラメータ近傍ロバストネス — DONE※市場反応指標として
 - OOS-005: コスト感度・イベント独立性 — DONE※暫定
-- OOS-006: 1Dレジーム分解の再検証 — TODO
-- OOS-007: 構造的失敗条件の再検証 — TODO
-- OOS-008: 最終OOSレビュー — TODO
+- OOS-006: 1Dレジーム分解の再検証 — DONE※仕様v1を事前固定
+- OOS-007: 構造的失敗条件の再検証 — DONE※暫定
+- OOS-008: 最終OOSレビュー — DONE※独立検証前のHOLD
 
 ## Frozen provisional counts
 Previous exploratory pipelines produced 85 and 113 events. These are provisional only and must not be treated as the audited event count.
@@ -34,7 +34,7 @@ Previous exploratory pipelines produced 85 and 113 events. These are provisional
 - Symbol: BTCUSDT Spot
 - Interval: 4h
 - Timezone: UTC
-- Period: 2020-01-01 through the latest fully closed 4H candle within 2026-09-28
+- Period: 2020-01-01 through 2026-09-27 16:00 UTC (frozen cutoff)
 - Source: Binance public Spot Kline API
 - Closed candles only
 - Validate duplicate open times
@@ -64,7 +64,7 @@ Previous exploratory pipelines produced 85 and 113 events. These are provisional
 - OOS-AUDIT-001: DONE※暫定 / official Binance series frozen as primary source.
 - Audited data: 14,770 closed BTCUSDT 4H candles, 2020-01-01 through 2026-09-27 16:00 UTC.
 - Duplicates: 0. OHLC inconsistencies: 0. Spacing errors: 1. No secondary repair is applied.
-- Audited independent event count: 95. Year counts: 2020=12, 2021=10, 2022=20, 2023=14, 2024=12, 2025=16, 2026=11.
+- Audited independent event count: 95. Event-year counts: 2020=12, 2021=11, 2022=19, 2023=14, 2024=12, 2025=16, 2026=11.
 - OOS-003: DONE※provisional. Full 95-event denominator exit comparison exists in results/oos_exit_summary.csv. No exit is adopted yet. RSI50 aggregate avg return -0.259%, PF 0.831; BB-middle -0.455%, PF 0.694; 8H fixed-time +0.034%, PF 1.058.
 - OOS-004: DONE※provisional. Corrected event generator now matches the frozen audit logic. Tested recovery deltas +3 through +8 and horizons 2/3/6/12 candles. Results are market-reaction measurements, not adopted strategy P&L. The +5 / 12-candle result is +0.377% average in the robustness table, but this must NOT be interpreted as a tradable 48h strategy result because it does not apply the structural failure/exit logic used by OOS-003.
 - OOS-005: DONE※provisional. Using the full 95-event exit table, fixed-time 2-candle average return is +0.034% before costs and falls to -0.016% at 0.05% round-trip cost, -0.066% at 0.10%, and -0.116% at 0.15%. Other tested exits are already negative before costs. Therefore the small raw 2-candle edge is cost-sensitive.
@@ -73,3 +73,13 @@ Previous exploratory pipelines produced 85 and 113 events. These are provisional
 - OOS-006 next: reconstruct and freeze the exact 1D regime specification before interpreting regime effects.
 - OOS-007 next: test structural failure handling and close-vs-intrabar ambiguity.
 - Research principle: never overwrite earlier exploratory results silently; preserve discrepancies and mark invalid/provisional runs explicitly.
+
+
+## OOS-006 / OOS-007 / OOS-008 final checkpoint — 2026-09-28
+- The OOS dataset cutoff is now explicitly frozen at 2026-09-27 20:00 UTC exclusive (last included candle open: 2026-09-27 16:00 UTC). This prevents later closed candles from silently changing historical OOS results.
+- OOS-006 regime specification v1 is frozen: BULL = daily close > SMA200 and daily RSI14 >= 50; BEAR = daily close < SMA200 and daily RSI14 < 50; otherwise NEUTRAL.
+- OOS-006 event allocation: BEAR 45, BULL 18, NEUTRAL 32. Neutral-regime returns are negative across every tested exit in the frozen sample; no regime filter is adopted because this is a partition of the same OOS sample, not independent validation.
+- OOS-007 structural failure comparison: structural stops lower average return for every tested exit. They reduce the worst individual trade in the sample but do not improve sequential max drawdown in the tested definitions. Ambiguous cases = 0.
+- OOS-008 final review: HOLD / not deployment-ready. The tested exit set has no durable positive net edge after plausible costs; the small fixed-2-candle raw edge is cost-sensitive. Robustness is sensitive to recovery threshold and horizon.
+- Full final review is stored in results/oos_final_review.md.
+- Next research requirement: independent validation design (time-separated OOS or walk-forward), not further tuning on this frozen sample.
