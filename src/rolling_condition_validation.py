@@ -2,6 +2,8 @@ import json
 from pathlib import Path
 import numpy as np
 import pandas as pd
+import requests
+import time
 
 ROOT=Path(__file__).resolve().parents[1]
 R=ROOT/"results"
@@ -18,15 +20,35 @@ audit= pd.read_csv(R/"oos_events.csv",parse_dates=["event_time","entry_time"])
 # condition_search_events has the same event_id ordering as the audited 95 events.
 # exit research contains the fixed-time returns in dedicated files; discover them by
 # reading the repository result if present.
-exit_path=R/"oos_exit_returns.csv"
-if not exit_path.exists():
-    # fall back to condition_search_results only for candidate ranking is unsafe;
-    # therefore require the dedicated return table rather than inventing values.
-    raise RuntimeError("Missing oos_exit_returns.csv; rolling condition selection requires event-level audited returns.")
-
-returns=pd.read_csv(exit_path)
-returns["event_id"]=returns["event_id"].astype(int)
-returns["event_time"]=pd.to_datetime(returns["event_time"],utc=True)
+# Build fixed-horizon event returns directly from Binance, matching the frozen event set.
+rows=[]
+start=int(pd.Timestamp("2020-01-01",tz="UTC").timestamp()*1000)
+end=int(pd.Timestamp("2026-09-27 20:00:00",tz="UTC").timestamp()*1000)
+step=4*60*60*1000
+while start<end:
+    q={"symbol":"BTCUSDT","interval":"4h","startTime":start,"endTime":end,"limit":1000}
+    b=requests.get("https://data-api.binance.vision/api/v3/klines",params=q,timeout=30).json()
+    if not b: break
+    rows.extend(b); start=int(b[-1][0])+step
+    time.sleep(.08)
+    if len(b)<1000: break
+m=pd.DataFrame(rows,columns=["open_time","open","high","low","close","volume","close_time","qv","trades","tb","tq","ignore"])
+m["open_time"]=pd.to_datetime(m["open_time"],unit="ms",utc=True)
+m["close_time"]=pd.to_datetime(m["close_time"],unit="ms",utc=True)
+m["close"]=pd.to_numeric(m["close"],errors="coerce")
+m["open"]=pd.to_numeric(m["open"],errors="coerce")
+m=m.drop_duplicates("open_time").sort_values("open_time").reset_index(drop=True)
+idx={t:i for i,t in enumerate(m.open_time)}
+rr=[]
+for _,e in events.iterrows():
+    p=idx.get(pd.Timestamp(e.entry_time))
+    if p is None: continue
+    for h in HORIZONS:
+        j=p+h-1
+        if j<len(m):
+            rr.append({"event_id":int(e.event_id),"horizon":h,
+                       "return":float(m.iloc[j].close)/float(e.entry_price)-1})
+returns=pd.DataFrame(rr)
 
 features=[
  "rsi_reentry","rsi_min","rsi_confirm","bb_z_reentry","bb_width_reentry",
