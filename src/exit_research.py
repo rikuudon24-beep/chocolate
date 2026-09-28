@@ -9,7 +9,7 @@ import requests
 SYMBOL = "BTCUSDT"
 INTERVAL = "4h"
 START = pd.Timestamp("2020-01-01 00:00:00", tz="UTC")
-END_EXCLUSIVE = pd.Timestamp("2026-09-29 00:00:00", tz="UTC")
+END_EXCLUSIVE = pd.Timestamp("2026-09-27 20:00:00", tz="UTC")
 LIMIT = 1000
 BASE_URL = "https://data-api.binance.vision/api/v3/klines"
 FOUR_HOURS = pd.Timedelta(hours=4)
