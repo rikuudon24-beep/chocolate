@@ -47,6 +47,9 @@ jobs:
       - name: Run walk-forward validation
         run: python src/walkforward_oos.py
 
+      - name: Run walk-forward uncertainty analysis
+        run: python src/walkforward_bootstrap.py
+
       - name: Save results
         run: |
           git config user.name "github-actions[bot]"
