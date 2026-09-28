@@ -19,5 +19,5 @@ jobs:
       - run: python src/canonical_indicator_validation.py
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "Add canonical indicator validation results"
+          commit_message: "Refresh canonical indicator validation results"
           file_pattern: "results/canonical_indicator_validation*.csv results/canonical_indicator_validation_summary.json"
