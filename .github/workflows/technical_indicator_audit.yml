@@ -1,0 +1,22 @@
+name: Technical Indicator Audit
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "src/technical_indicator_audit.py"
+      - "results/condition_search_events.csv"
+      - ".github/workflows/technical_indicator_audit.yml"
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pandas requests
+      - run: python src/technical_indicator_audit.py
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Update broad technical indicator audit"
+          file_pattern: "results/technical_indicator_audit_summary.json results/technical_indicator_audit.csv results/technical_indicator_audit_events.csv"
