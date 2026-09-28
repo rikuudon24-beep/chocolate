@@ -40,6 +40,15 @@ def main():
         gains=g.loc[g["return"]>0,"return"].sum()
         summary.append({"train_end":te,"validation_year":vy,"horizon":h,"n":len(g),"avg_return":g["return"].mean(),"median_return":g["return"].median(),"win_rate":wins/len(g),"profit_factor":gains/losses if losses else np.nan})
     pd.DataFrame(summary).to_csv(RESULTS/"oos_walkforward_summary.csv",index=False)
-    print(pd.DataFrame(summary).to_string(index=False))
+    summary_df=pd.DataFrame(summary)
+    agg=[]
+    for h,g in detail.groupby("horizon"):
+        for cost in [0.0,0.0005,0.0010,0.0015]:
+            rr=g["return"]-cost
+            wins=rr[rr>0].sum(); losses=-rr[rr<0].sum()
+            agg.append({"horizon":h,"round_trip_cost":cost,"n":len(rr),"avg_return":rr.mean(),"win_rate":(rr>0).mean(),"profit_factor":wins/losses if losses else np.nan})
+    pd.DataFrame(agg).to_csv(RESULTS/"oos_walkforward_cost_summary.csv",index=False)
+    print(summary_df.to_string(index=False))
+    print(pd.DataFrame(agg).to_string(index=False))
 
 if __name__=="__main__": main()
