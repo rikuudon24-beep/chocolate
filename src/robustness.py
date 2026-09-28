@@ -7,7 +7,7 @@ import pandas as pd
 SYMBOL = "BTCUSDT"
 INTERVAL = "4h"
 START = "2020-01-01"
-END = "2026-09-29"
+END = "2026-09-27 20:00:00"
 BASE = "https://data-api.binance.vision/api/v3/klines"
 LIMIT = 1000
 
