@@ -109,3 +109,5 @@ Previous exploratory pipelines produced 85 and 113 events. These are provisional
 - Historical OOS outputs remain frozen; forward-shadow observations are stored separately and cannot alter the 95-event audited denominator.
 - Returns are reported only after the fixed 2/3/6/12-candle horizons have fully matured. No parameter fitting or exit selection is performed.
 - This is intended to become the genuinely untouched validation stream as new closed BTCUSDT 4H candles arrive.
+
+- Automation note — after the prior run completed, the branch was re-triggered so the current workflow definition (including uncertainty and forward-shadow stages) can execute against the settled main branch.
