@@ -33,6 +33,8 @@ jobs:
 
       - name: Run robustness research
         run: python src/robustness.py
+      - name: Run 1D regime research
+        run: python src/regime_oos.py
 
       - name: Save results
         run: |
