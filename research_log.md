@@ -26,6 +26,7 @@
 - OOS-006: 1Dレジーム分解の再検証 — DONE※仕様v1を事前固定
 - OOS-007: 構造的失敗条件の再検証 — DONE※暫定
 - OOS-008: 最終OOSレビュー — DONE※独立検証前のHOLD
+- OOS-009: 固定仕様・時系列ウォークフォワード検証 — DONE※暫定
 
 ## Frozen provisional counts
 Previous exploratory pipelines produced 85 and 113 events. These are provisional only and must not be treated as the audited event count.
@@ -83,3 +84,14 @@ Previous exploratory pipelines produced 85 and 113 events. These are provisional
 - OOS-008 final review: HOLD / not deployment-ready. The tested exit set has no durable positive net edge after plausible costs; the small fixed-2-candle raw edge is cost-sensitive. Robustness is sensitive to recovery threshold and horizon.
 - Full final review is stored in results/oos_final_review.md.
 - Next research requirement: independent validation design (time-separated OOS or walk-forward), not further tuning on this frozen sample.
+
+
+## OOS-009 checkpoint — 2026-09-28
+- Validation design is fixed-spec and time-separated: validate 2023 after training window through 2022; 2024 after 2023; 2025 after 2024; 2026 after 2025.
+- No parameters are fitted from the training windows. The purpose is stability testing of the already-frozen entry specification, not post-hoc optimization.
+- Validation events: 2023=14, 2024=12, 2025=16, 2026=11; total 53.
+- Aggregate fixed-time reaction across all validation years: 2 candles avg +0.251%, 3 candles +0.385%, 6 candles +0.021%, 12 candles +0.824%.
+- Aggregate figures are before costs and remain market-reaction measurements rather than adopted strategy P&L.
+- Annual consistency is mixed: 2025 is negative at 2/3/6 candles while 2023/2024/2026 are generally positive at several horizons. Therefore the effect is not yet demonstrated as stable across regimes.
+- At 0.05% round-trip cost, aggregate average return mechanically falls by 0.05 percentage points for every horizon; the 6-candle aggregate becomes slightly negative.
+- OOS-009 does not justify selecting a particular exit horizon. Exit choice remains HOLD pending a pre-specified independent decision rule and further validation.
