@@ -1,0 +1,23 @@
+name: Canonical Indicator Validation
+on:
+  push:
+    paths:
+      - "src/canonical_indicator_validation.py"
+      - ".github/workflows/canonical_indicator_validation.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pandas requests
+      - run: python src/canonical_indicator_validation.py
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Add canonical indicator validation results"
+          file_pattern: "results/canonical_indicator_validation*.csv results/canonical_indicator_validation_summary.json"
