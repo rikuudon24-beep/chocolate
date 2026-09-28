@@ -1,0 +1,27 @@
+name: Volume Anchor RSI Strata
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'src/volume_anchor_rsi_strata.py'
+      - 'results/condition_search_events.csv'
+      - '.github/workflows/volume_anchor_rsi_strata.yml'
+permissions:
+  contents: write
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements.txt
+      - run: python src/volume_anchor_rsi_strata.py
+      - name: Save result
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results/volume_anchor_rsi_strata.json
+          git diff --cached --quiet || git commit -m "Add fixed RSI strata audit result"
+          git push
