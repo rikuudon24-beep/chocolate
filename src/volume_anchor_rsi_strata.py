@@ -34,7 +34,7 @@ rows=[]
 for label in labels:
     ids=set(events.loc[events.rsi_bin==label,"event_id"])
     for h in (2,3,6,12):
-        x=returns[(returns.event_id.isin(ids))&(returns.horizon==h)].return
+        x=returns[(returns.event_id.isin(ids))&(returns.horizon==h)]["return"]
         if len(x):
             w=x[x>0]; l=x[x<0]; pf=float(w.sum()/(-l.sum())) if len(l) else float("inf")
             eq=(1+x).cumprod(); dd=float((eq/eq.cummax()-1).min())
