@@ -53,6 +53,9 @@ jobs:
       - name: Run condition search (train/validation/test)
         run: python src/condition_search.py
 
+      - name: Run rolling condition validation
+        run: python src/rolling_condition_validation.py
+
       - name: Run untouched forward shadow validation
         run: python src/forward_shadow.py
 
