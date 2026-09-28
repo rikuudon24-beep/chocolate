@@ -36,6 +36,9 @@ jobs:
       - name: Run 1D regime research
         run: python src/regime_oos.py
 
+      - name: Run structural failure research
+        run: python src/structural_failure_oos.py
+
       - name: Save results
         run: |
           git config user.name "github-actions[bot]"
