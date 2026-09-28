@@ -65,7 +65,7 @@ Structural stop conditions were compared with the same exits without the structu
 - Time exits: effect is smaller, about 0.08–0.15 percentage points for 2–3 candles and about 0.45 percentage points at 12 candles.
 - Ambiguous cases: 0.
 
-The structural stop materially reduces tail losses and drawdown in this sample. For example, with RSI50 the worst trade changes from -15.44% without the stop to -9.99% with it, and max drawdown changes from -24.21% to -42.17% when measured on the sequential return series. Because this comparison uses exit-by-exit sequential equity and the stop changes trade timing, drawdown should be treated as a descriptive risk measure, not a fully optimized portfolio statistic.
+The structural stop materially reduces the worst individual trade in this sample, but it does not reduce the sequential max drawdown under the tested exit definitions. For example, with RSI50 the worst trade changes from -15.44% without the stop to -9.99% with it, while the measured sequential max drawdown is -24.21% without the stop versus -42.17% with it. Because the stop changes trade timing and the exit sequence, these drawdown figures are descriptive rather than a fully optimized portfolio statistic.
 
 Overall, the structural failure rule behaves primarily as a risk-control mechanism in this frozen sample, not as a proven source of positive expectancy.
 
