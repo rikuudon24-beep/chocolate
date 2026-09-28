@@ -1,0 +1,33 @@
+{
+  "purpose": "Fixed pre-registered interaction audit; exploratory only, no threshold selection or promotion.",
+  "events": 95,
+  "cost": 0.001,
+  "interactions": [
+    "vol_z>=1 & body<=0.3",
+    "vol_z>=1 & macd_hist<0",
+    "vol_z>=1 & bb_width<=0.05",
+    "vol_z>=1 & adx>=20"
+  ],
+  "splits": [
+    [
+      2020,
+      2022,
+      2023
+    ],
+    [
+      2020,
+      2023,
+      2024
+    ],
+    [
+      2020,
+      2024,
+      2025
+    ],
+    [
+      2020,
+      2025,
+      2026
+    ]
+  ]
+}
