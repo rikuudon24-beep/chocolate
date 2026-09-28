@@ -1,0 +1,78 @@
+{
+  "cost": 0.001,
+  "anchor": "vol_z20_reentry >= 1.0",
+  "fixed_candidate": "vol_z20_reentry >= 1.0 AND rsi_reentry >= 30.0",
+  "purpose": "Pre-registered replication/coverage audit; no threshold selection and no promotion.",
+  "coverage": [
+    {
+      "sample": "volume_anchor",
+      "year": 2020,
+      "events": 4
+    },
+    {
+      "sample": "volume_anchor",
+      "year": 2021,
+      "events": 2
+    },
+    {
+      "sample": "volume_anchor",
+      "year": 2022,
+      "events": 7
+    },
+    {
+      "sample": "volume_anchor",
+      "year": 2023,
+      "events": 6
+    },
+    {
+      "sample": "volume_anchor",
+      "year": 2024,
+      "events": 7
+    },
+    {
+      "sample": "volume_anchor",
+      "year": 2025,
+      "events": 3
+    },
+    {
+      "sample": "volume_anchor",
+      "year": 2026,
+      "events": 5
+    },
+    {
+      "sample": "volume_plus_rsi30",
+      "year": 2020,
+      "events": 3
+    },
+    {
+      "sample": "volume_plus_rsi30",
+      "year": 2021,
+      "events": 2
+    },
+    {
+      "sample": "volume_plus_rsi30",
+      "year": 2022,
+      "events": 5
+    },
+    {
+      "sample": "volume_plus_rsi30",
+      "year": 2023,
+      "events": 5
+    },
+    {
+      "sample": "volume_plus_rsi30",
+      "year": 2024,
+      "events": 5
+    },
+    {
+      "sample": "volume_plus_rsi30",
+      "year": 2026,
+      "events": 3
+    }
+  ],
+  "anchor_total": 34,
+  "candidate_total": 23,
+  "candidate_years_with_zero": [
+    2025
+  ]
+}
