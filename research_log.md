@@ -55,3 +55,14 @@ Previous exploratory pipelines produced 85 and 113 events. These are provisional
 - Do not count overlapping confirmations as separate independent events.
 - Keep market reaction metrics separate from strategy P&L.
 - If an OHLC candle cannot establish intrabar order between conflicting exit/stop conditions, classify it as ambiguous rather than choosing the favorable interpretation.
+
+## Handoff checkpoint — 2026-09-28
+- OOS-AUDIT-001: DONE※暫定 / official Binance series frozen as primary source.
+- Audited data: 14,770 closed BTCUSDT 4H candles, 2020-01-01 through 2026-09-27 16:00 UTC.
+- Duplicates: 0. OHLC inconsistencies: 0. Spacing errors: 1 (one missing 4H interval; exact timestamp should be read from results/spacing_errors.csv). No secondary repair is applied.
+- Audited independent event count: 95. Year counts: 2020=12, 2021=10, 2022=20, 2023=14, 2024=12, 2025=16, 2026=11.
+- OOS-003: DONE※provisional. Full 95-event denominator exit comparison exists in results/oos_exit_summary.csv. No exit is adopted yet. RSI50 aggregate avg return -0.259%, PF 0.831; BB-middle -0.455%, PF 0.694; 8H fixed-time +0.034%, PF 1.058. Strong conditional RSI50-hit returns are selection-biased and must not be treated as strategy performance.
+- OOS-004: IN PROGRESS. Recovery-delta robustness script was added, then corrected so event extraction matches the frozen audit logic. Re-run is required before interpreting results. Current tested deltas intended: +3 through +8 RSI points; horizons 2/3/6/12 candles.
+- Important correction: an earlier robustness output used a mismatched event generator and is invalid for final interpretation. Do not reuse those numbers.
+- Next: rerun corrected OOS-004; then 1D regime decomposition on the audited 95-event set; cost sensitivity; event-spacing/independence audit; close-based vs intrabar structural failure handling; final frozen OOS review.
+- Research principle: never overwrite earlier exploratory results silently; preserve discrepancies and mark invalid/provisional runs explicitly.
