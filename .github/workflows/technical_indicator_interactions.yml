@@ -1,0 +1,23 @@
+name: Technical Indicator Interactions
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "src/technical_indicator_interactions.py"
+      - ".github/workflows/technical_indicator_interactions.yml"
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pandas numpy requests
+      - run: python src/technical_indicator_interactions.py
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Update technical indicator interactions
+          file_pattern: results/technical_indicator_interactions.csv results/technical_indicator_interactions_summary.json
