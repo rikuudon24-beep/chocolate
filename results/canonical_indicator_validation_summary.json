@@ -1,0 +1,17 @@
+{
+  "purpose": "Canonical implementation audit on the frozen 95-event denominator; no threshold selection or promotion.",
+  "definitions": {
+    "DMI_ADX": "Wilder RMA(14) for TR/+DM/-DM, DX, then ADX RMA(14).",
+    "MFI": "Typical-price direction; positive/negative raw money-flow sums over 14.",
+    "OBV": "Cumulative signed volume; OBV_z20 is rolling z-score of canonical OBV.",
+    "lookahead": "Only re-entry candle close values are used."
+  },
+  "events": 95,
+  "cost": 0.001,
+  "horizons": [
+    2,
+    3,
+    6,
+    12
+  ]
+}
