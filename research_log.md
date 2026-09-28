@@ -119,3 +119,8 @@ Previous exploratory pipelines produced 85 and 113 events. These are provisional
 - The year-block bootstrap at 0.05% gives positive average-return intervals for all four horizons, but it is based on only four validation years and should be treated as descriptive, not confirmatory.
 - Untouched forward-shadow scan found 0 events at or after the frozen 2026-09-27 20:00 UTC cutoff and 0 matured horizon returns. This is expected immediately after the cutoff and is not evidence for or against the rule.
 - OOS-010 strengthens the HOLD decision: no exit horizon is selected and no live deployment is authorized by this research stage.
+
+
+## Forward-shadow implementation correction — 2026-09-28
+- Corrected the forward-shadow data path: it now fetches closed BTCUSDT 4H candles from the frozen cutoff forward using the live Binance public API, instead of reusing the historical frozen-data fetch whose endpoint stops at the OOS cutoff.
+- The historical audit remains frozen; only the separate forward-shadow stream is allowed to advance with new candles.
