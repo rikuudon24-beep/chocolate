@@ -18,10 +18,14 @@
 - BB-LONG-009: FAIL / NO-GO — DONE
 - BB-LONG-010: EXIT探索 — HOLD
 - OOS-001: 長期OOS — HOLD
-- OOS-002b: 1Dレジーム分解 — DONE※暫定
-- OOS-AUDIT-001: 正本データ監査 — IN PROGRESS
-- OOS-003: 全イベント出口比較 — TODO
-- OOS-004: パラメータ近傍ロバストネス — TODO
+- OOS-002b: 1Dレジーム分解 — DONE※暫定・再現仕様未固定
+- OOS-AUDIT-001: 正本データ監査 — DONE※暫定
+- OOS-003: 全イベント出口比較 — DONE※暫定
+- OOS-004: パラメータ近傍ロバストネス — DONE※市場反応指標として
+- OOS-005: コスト感度・イベント独立性 — DONE※暫定
+- OOS-006: 1Dレジーム分解の再検証 — TODO
+- OOS-007: 構造的失敗条件の再検証 — TODO
+- OOS-008: 最終OOSレビュー — TODO
 
 ## Frozen provisional counts
 Previous exploratory pipelines produced 85 and 113 events. These are provisional only and must not be treated as the audited event count.
@@ -59,10 +63,13 @@ Previous exploratory pipelines produced 85 and 113 events. These are provisional
 ## Handoff checkpoint — 2026-09-28
 - OOS-AUDIT-001: DONE※暫定 / official Binance series frozen as primary source.
 - Audited data: 14,770 closed BTCUSDT 4H candles, 2020-01-01 through 2026-09-27 16:00 UTC.
-- Duplicates: 0. OHLC inconsistencies: 0. Spacing errors: 1 (one missing 4H interval; exact timestamp should be read from results/spacing_errors.csv). No secondary repair is applied.
+- Duplicates: 0. OHLC inconsistencies: 0. Spacing errors: 1. No secondary repair is applied.
 - Audited independent event count: 95. Year counts: 2020=12, 2021=10, 2022=20, 2023=14, 2024=12, 2025=16, 2026=11.
-- OOS-003: DONE※provisional. Full 95-event denominator exit comparison exists in results/oos_exit_summary.csv. No exit is adopted yet. RSI50 aggregate avg return -0.259%, PF 0.831; BB-middle -0.455%, PF 0.694; 8H fixed-time +0.034%, PF 1.058. Strong conditional RSI50-hit returns are selection-biased and must not be treated as strategy performance.
-- OOS-004: IN PROGRESS. Recovery-delta robustness script was added, then corrected so event extraction matches the frozen audit logic. Re-run is required before interpreting results. Current tested deltas intended: +3 through +8 RSI points; horizons 2/3/6/12 candles.
-- Important correction: an earlier robustness output used a mismatched event generator and is invalid for final interpretation. Do not reuse those numbers.
-- Next: rerun corrected OOS-004; then 1D regime decomposition on the audited 95-event set; cost sensitivity; event-spacing/independence audit; close-based vs intrabar structural failure handling; final frozen OOS review.
+- OOS-003: DONE※provisional. Full 95-event denominator exit comparison exists in results/oos_exit_summary.csv. No exit is adopted yet. RSI50 aggregate avg return -0.259%, PF 0.831; BB-middle -0.455%, PF 0.694; 8H fixed-time +0.034%, PF 1.058.
+- OOS-004: DONE※provisional. Corrected event generator now matches the frozen audit logic. Tested recovery deltas +3 through +8 and horizons 2/3/6/12 candles. Results are market-reaction measurements, not adopted strategy P&L. The +5 / 12-candle result is +0.377% average in the robustness table, but this must NOT be interpreted as a tradable 48h strategy result because it does not apply the structural failure/exit logic used by OOS-003.
+- OOS-005: DONE※provisional. Using the full 95-event exit table, fixed-time 2-candle average return is +0.034% before costs and falls to -0.016% at 0.05% round-trip cost, -0.066% at 0.10%, and -0.116% at 0.15%. Other tested exits are already negative before costs. Therefore the small raw 2-candle edge is cost-sensitive.
+- Event independence audit: consecutive audited event gaps are mostly long (median 364h; mean 608.9h). 2 gaps are <24h, 5 are <48h, 10 are <72h, 14 are <96h. This does not prove statistical independence, but dense clustering is limited in the frozen 95-event set.
+- Important correction: OOS-004 robustness horizon returns and OOS-003 strategy exits are different measurements. Do not compare them as if they were the same P&L definition.
+- OOS-006 next: reconstruct and freeze the exact 1D regime specification before interpreting regime effects.
+- OOS-007 next: test structural failure handling and close-vs-intrabar ambiguity.
 - Research principle: never overwrite earlier exploratory results silently; preserve discrepancies and mark invalid/provisional runs explicitly.
