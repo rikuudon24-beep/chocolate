@@ -66,6 +66,12 @@ def main():
             "avg_stop_effect": delta.mean(),
             "median_stop_effect": delta.median(),
             "stop_effect_positive_rate": (delta > 0).mean(),
+            "worst_with_stop": valid["return_with_stop"].min(),
+            "worst_without_stop": valid["return_without_stop"].min(),
+            "p05_with_stop": valid["return_with_stop"].quantile(0.05),
+            "p05_without_stop": valid["return_without_stop"].quantile(0.05),
+            "max_dd_with_stop": ((1 + valid["return_with_stop"]).cumprod() / (1 + valid["return_with_stop"]).cumprod().cummax() - 1).min(),
+            "max_dd_without_stop": ((1 + valid["return_without_stop"]).cumprod() / (1 + valid["return_without_stop"]).cumprod().cummax() - 1).min(),
         })
     summary = pd.DataFrame(out)
     summary.to_csv(RESULTS / "oos_structural_failure_summary.csv", index=False)
