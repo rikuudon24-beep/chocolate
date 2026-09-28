@@ -37,11 +37,12 @@ for _,e in events.iterrows():
                        "return":float(m.iloc[j].close)/float(e.entry_price)-1})
 returns=pd.DataFrame(rr)
 
+# Only features whose values are known no later than the confirmation candle
+# are eligible. Entry-candle close/volume-derived features are excluded because
+# the trade is entered at that candle's open.
 features=[
  "rsi_reentry","rsi_min","rsi_confirm","bb_z_reentry","bb_width_reentry",
- "atr_pct_reentry","ret4_reentry","ret12_reentry","ret24_reentry","vol_z20_reentry",
- "bb_z_entry","bb_width_entry","atr_pct_entry","ret4_entry","ret12_entry",
- "ret24_entry","vol_z20_entry"
+ "atr_pct_reentry","ret4_reentry","ret12_reentry","ret24_reentry","vol_z20_reentry"
 ]
 grid={
  "rsi_reentry":[20,25,30,35,38],
@@ -53,14 +54,7 @@ grid={
  "ret4_reentry":[-.08,-.05,-.03,-.01,0],
  "ret12_reentry":[-.12,-.08,-.05,-.02,0],
  "ret24_reentry":[-.20,-.12,-.08,-.04,0],
- "vol_z20_reentry":[-1,0,1,2,3],
- "bb_z_entry":[-2.5,-2.2,-2,-1.8,-1.5],
- "bb_width_entry":[.02,.03,.05,.08,.12],
- "atr_pct_entry":[.01,.02,.03,.05,.08],
- "ret4_entry":[-.08,-.05,-.03,-.01,0],
- "ret12_entry":[-.12,-.08,-.05,-.02,0],
- "ret24_entry":[-.20,-.12,-.08,-.04,0],
- "vol_z20_entry":[-1,0,1,2,3]
+ "vol_z20_reentry":[-1,0,1,2,3]
 }
 def mask(df,f,o,t):
     s=pd.to_numeric(df[f],errors="coerce")
@@ -92,7 +86,6 @@ for train_name,val_name,vstart,vend in splits:
                 x=returns[(returns.event_id.isin(ids))&(returns.horizon==2)]["return"]
                 n,a,w,p,net,dd=metric(x)
                 if n<MIN_TRAIN: continue
-                # Selection is entirely train-only. Both directions are tested symmetrically.
                 score=net+0.0015*(w-.5)
                 candidates.append((score,f,o,t,n,a,w,p,net,dd))
     candidates.sort(reverse=True)
@@ -110,7 +103,9 @@ for train_name,val_name,vstart,vend in splits:
 pd.DataFrame(out).to_csv(R/"rolling_condition_bidirectional.csv",index=False)
 pd.DataFrame(selected).to_csv(R/"rolling_condition_bidirectional_selected.csv",index=False)
 summary={"cost":COST,"min_train":MIN_TRAIN,"horizons":list(HORIZONS),
-         "note":"Every feature threshold is tested in both <= and >= directions. Selection is train-only; validation is untouched. No automatic promotion.",
+         "eligible_features":features,
+         "excluded_features":["bb_z_entry","bb_width_entry","atr_pct_entry","ret4_entry","ret12_entry","ret24_entry","vol_z20_entry"],
+         "note":"Entry-candle close-derived features are excluded because entry is at that candle's open. Selection is train-only; validation is untouched. No automatic promotion.",
          "splits":[x[0]+" -> "+x[1] for x in splits],
          "selection":pd.DataFrame(selected).to_dict("records")}
 (R/"rolling_condition_bidirectional_summary.json").write_text(json.dumps(summary,ensure_ascii=False,indent=2),encoding="utf-8")
