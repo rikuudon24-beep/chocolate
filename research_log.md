@@ -102,3 +102,10 @@ Previous exploratory pipelines produced 85 and 113 events. These are provisional
 - Event bootstrap uses 10,000 deterministic resamples per horizon/cost level; a separate year-block bootstrap is reported at 0.05% round-trip cost to show sensitivity to year-level dependence.
 - Confidence intervals are descriptive uncertainty ranges, not proof of future performance and not a basis for selecting a horizon after the fact.
 - The analysis is intentionally run after the fixed walk-forward outputs and cannot modify the frozen event set or parameters.
+
+
+## Forward-shadow design checkpoint — 2026-09-28
+- Added a separate forward-shadow validation path that only evaluates events at or after the frozen OOS cutoff (2026-09-27 20:00 UTC).
+- Historical OOS outputs remain frozen; forward-shadow observations are stored separately and cannot alter the 95-event audited denominator.
+- Returns are reported only after the fixed 2/3/6/12-candle horizons have fully matured. No parameter fitting or exit selection is performed.
+- This is intended to become the genuinely untouched validation stream as new closed BTCUSDT 4H candles arrive.
