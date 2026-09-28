@@ -62,7 +62,8 @@ def build_events(df, delta):
         event_low=df.low.iloc[i]
         rmin=rs.iloc[i]
         conf=None
-        for j in range(i, min(i+7,len(df))):
+        window_end=min(i+6,len(df)-2)
+        for j in range(i+1, window_end+1):
             rmin=min(rmin, rs.iloc[j])
             if df.low.iloc[j] < event_low or df.close.iloc[j] < lower.iloc[j]:
                 break
@@ -70,13 +71,13 @@ def build_events(df, delta):
                 conf=j
                 break
         if conf is None:
-            consumed=i+6
+            consumed=window_end
             continue
         entry=conf+1
         if entry >= len(df):
             break
         events.append({"event_time":df.open_time.iloc[i],"entry_idx":entry,"entry_time":df.open_time.iloc[entry],"entry_price":df.open.iloc[entry],"event_low":event_low})
-        consumed=conf+6
+        consumed=conf+1
     return pd.DataFrame(events)
 
 def metrics(df, events, horizon=12):
