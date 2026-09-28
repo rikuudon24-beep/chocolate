@@ -1,4 +1,7 @@
 name: Technical Indicator Audit
+permissions:
+  contents: write
+
 on:
   workflow_dispatch:
   push:
