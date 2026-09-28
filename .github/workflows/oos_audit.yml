@@ -31,6 +31,9 @@ jobs:
       - name: Run exit research
         run: python src/exit_research.py
 
+      - name: Run robustness research
+        run: python src/robustness.py
+
       - name: Save results
         run: |
           git config user.name "github-actions[bot]"
