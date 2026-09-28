@@ -1,0 +1,2 @@
+regime_definition,assignment_time,event_count,bull_events,neutral_events,bear_events
+BULL=Daily close>SMA200 and Daily RSI14>=50; BEAR=Daily close<SMA200 and Daily RSI14<50; otherwise NEUTRAL,UTC daily state at event entry day,760,144,256,360
