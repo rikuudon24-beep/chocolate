@@ -50,23 +50,28 @@ def feat(d):
     return x
 
 def events(x):
-    ev=[]; consumed=-1; i=20
+    ev=[]; consumed_until=-1; i=20
     while i<len(x)-1:
         mp=x.close.iloc[i-20:i].mean(); sp=x.close.iloc[i-20:i].std(ddof=0)
         mc=x.close.iloc[i-19:i+1].mean(); sc=x.close.iloc[i-19:i+1].std(ddof=0)
-        if i>consumed and x.close.iloc[i-1]<mp-2*sp and x.close.iloc[i]>=mc-2*sc and x.rsi.iloc[i]<40:
-            low=float(x.low.iloc[i]); mn=float(x.rsi.iloc[i]); conf=None
-            for j in range(i+1,min(i+6,len(x)-2)+1):
-                mn=min(mn,float(x.rsi.iloc[j]))
-                mj=x.close.iloc[j-19:j+1].mean(); sj=x.close.iloc[j-19:j+1].std(ddof=0)
-                if x.low.iloc[j]<low or x.close.iloc[j]<mj-2*sj: break
-                if x.rsi.iloc[j]>=mn+5: conf=j; break
-            if conf is not None:
-                entry=conf+1
-                if entry<len(x): ev.append({"idx":i,"entry":entry,"date":x.open_time.iloc[entry],"vol_z":x.vol_z.iloc[i],"rsi":x.rsi.iloc[i],"macd_hist":x.macd_hist.iloc[i],"di_spread":x.di_spread.iloc[i],"adx":x.adx.iloc[i],"ema20_dist":x.ema20_dist.iloc[i],"ema20_slope12":x.ema20_slope12.iloc[i],"ema200_dist":x.ema200_dist.iloc[i],"ema200_slope12":x.ema200_slope12.iloc[i],"stoch":x.stoch.iloc[i],"mfi":x.mfi.iloc[i],"obv_z":x.obv_z.iloc[i],"vwap_dist":x.vwap_dist.iloc[i],"bb_width":x.bb_width.iloc[i],"body":x.body.iloc[i],"lower_wick":x.lower_wick.iloc[i],"close_loc":x.close_loc.iloc[i]})
-                consumed=conf
-                i=conf+1; continue
-        i+=1
+        candidate=(i>consumed_until and x.close.iloc[i-1]<mp-2*sp and x.close.iloc[i]>=mc-2*sc and x.rsi.iloc[i]<40)
+        if not candidate:
+            i+=1; continue
+        event_low=float(x.low.iloc[i]); mn=float(x.rsi.iloc[i]); conf=None; failed=False
+        window_end=min(i+6,len(x)-2)
+        for j in range(i+1,window_end+1):
+            mn=min(mn,float(x.rsi.iloc[j]))
+            mj=x.close.iloc[j-19:j+1].mean(); sj=x.close.iloc[j-19:j+1].std(ddof=0)
+            if x.low.iloc[j]<event_low or x.close.iloc[j]<mj-2*sj:
+                failed=True; break
+            if x.rsi.iloc[j]>=mn+5:
+                conf=j; break
+        if not failed and conf is not None:
+            entry=conf+1
+            if entry<len(x):
+                ev.append({"idx":i,"entry":entry,"date":x.open_time.iloc[entry],"vol_z":x.vol_z.iloc[i],"rsi":x.rsi.iloc[i],"macd_hist":x.macd_hist.iloc[i],"di_spread":x.di_spread.iloc[i],"adx":x.adx.iloc[i],"ema20_dist":x.ema20_dist.iloc[i],"ema20_slope12":x.ema20_slope12.iloc[i],"ema200_dist":x.ema200_dist.iloc[i],"ema200_slope12":x.ema200_slope12.iloc[i],"stoch":x.stoch.iloc[i],"mfi":x.mfi.iloc[i],"obv_z":x.obv_z.iloc[i],"vwap_dist":x.vwap_dist.iloc[i],"bb_width":x.bb_width.iloc[i],"body":x.body.iloc[i],"lower_wick":x.lower_wick.iloc[i],"close_loc":x.close_loc.iloc[i]})
+                consumed_until=entry; i=entry+1; continue
+        consumed_until=max(consumed_until,window_end); i+=1
     return pd.DataFrame(ev)
 
 def ret(x,e,h):
