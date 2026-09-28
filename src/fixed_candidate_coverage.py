@@ -24,6 +24,6 @@ summary={"cost":COST,"anchor":"vol_z20_reentry >= 1.0",
          "coverage":rows,
          "anchor_total":int(anchor.sum()),
          "candidate_total":int(candidate.sum()),
-         "candidate_years_with_zero":[int(y) for y in sorted(events.loc[events.year.unique(),"year"].unique()) if len(events[(events.year==y)&candidate])==0]}
+         "candidate_years_with_zero":[int(y) for y in sorted(events["year"].unique()) if len(events[(events.year==y)&candidate])==0]}
 (R/"fixed_candidate_coverage.json").write_text(json.dumps(summary,ensure_ascii=False,indent=2),encoding="utf-8")
 print(json.dumps(summary,ensure_ascii=False,indent=2))
