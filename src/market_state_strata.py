@@ -17,9 +17,12 @@ def fetch():
  return d[(d.open_time>=START)&(d.open_time<END)].drop_duplicates("open_time").sort_values("open_time").reset_index(drop=True)
 def rma(s,n=14):
  a=s.to_numpy(float);o=np.full(len(a),np.nan)
- if len(a)<n:return pd.Series(o,index=s.index)
- o[n-1]=np.mean(a[:n]);alpha=1/n
- for i in range(n,len(a)):o[i]=(1-alpha)*o[i-1]+alpha*a[i]
+ valid=np.where(np.isfinite(a))[0]
+ if len(valid)<n:return pd.Series(o,index=s.index)
+ seed_idx=valid[n-1];o[seed_idx]=np.mean(a[valid[:n]]);alpha=1/n
+ for i in range(seed_idx+1,len(a)):
+  if np.isfinite(a[i]):o[i]=(1-alpha)*o[i-1]+alpha*a[i]
+  else:o[i]=o[i-1]
  return pd.Series(o,index=s.index)
 def features(d):
  x=d.copy();c,o,h,l,v=x.close,x.open,x.high,x.low,x.volume
