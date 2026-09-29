@@ -1,0 +1,37 @@
+{
+  "purpose": "Descriptive permutation audit of fixed volume-z>=1 association; not an inferential p-value because threshold was previously explored on the same sample.",
+  "events": 95,
+  "permutations": 10000,
+  "seed": 20260929,
+  "within_year_shuffle": true,
+  "results": [
+    {
+      "horizon": 2,
+      "observed_net_avg": 0.005281552446113918,
+      "null_mean": 0.0012035057709166453,
+      "null_p_one_sided": 0.0357,
+      "n_obs": 34
+    },
+    {
+      "horizon": 3,
+      "observed_net_avg": 0.0073684091794474086,
+      "null_mean": 0.0018381532620880638,
+      "null_p_one_sided": 0.0319,
+      "n_obs": 34
+    },
+    {
+      "horizon": 6,
+      "observed_net_avg": 0.00022358702799416246,
+      "null_mean": -0.0020105291173523093,
+      "null_p_one_sided": 0.3022,
+      "n_obs": 34
+    },
+    {
+      "horizon": 12,
+      "observed_net_avg": 0.008579390584273806,
+      "null_mean": 0.0019013845374316804,
+      "null_p_one_sided": 0.1216,
+      "n_obs": 34
+    }
+  ]
+}
