@@ -20,3 +20,4 @@ jobs:
         with:
           commit_message: "Update market state strata"
           file_pattern: "results/market_state_strata.csv results/market_state_strata_summary.json"
+
