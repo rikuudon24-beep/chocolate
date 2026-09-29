@@ -1,0 +1,22 @@
+name: Fixed Volume State Validation
+on:
+  push:
+    paths:
+      - "src/fixed_volume_state_validation.py"
+      - ".github/workflows/fixed_volume_state_validation.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - run: pip install pandas requests
+      - run: python -u src/fixed_volume_state_validation.py
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Update fixed volume state validation"
+          file_pattern: "results/fixed_volume_state_validation.csv results/fixed_volume_state_validation_summary.json"
