@@ -1,0 +1,28 @@
+{
+  "purpose": "Pre-registered descriptive market-state strata on frozen 95 events; no threshold optimization or promotion.",
+  "events": 95,
+  "cost": 0.001,
+  "states": [
+    "ADX<20",
+    "ADX20-25",
+    "ADX>=25",
+    "MFI<20",
+    "MFI20-30",
+    "MFI30-50",
+    "OBVz<-1",
+    "OBVz-1to1",
+    "OBVz>=1",
+    "Volz<0",
+    "Volz0-1",
+    "Volz>=1",
+    "Body<0.3",
+    "Body0.3-0.7",
+    "Body>=0.7",
+    "BBwidth<0.05",
+    "BBwidth0.05-0.12",
+    "BBwidth>=0.12",
+    "RSI<20",
+    "RSI20-30",
+    "RSI30-40"
+  ]
+}
