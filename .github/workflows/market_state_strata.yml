@@ -1,0 +1,22 @@
+name: Market State Strata
+on:
+  push:
+    paths:
+      - "src/market_state_strata.py"
+      - ".github/workflows/market_state_strata.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - run: pip install pandas requests
+      - run: python src/market_state_strata.py
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Update market state strata"
+          file_pattern: "results/market_state_strata.csv results/market_state_strata_summary.json"
