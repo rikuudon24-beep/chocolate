@@ -14,10 +14,15 @@ jobs:
           python-version: "3.11"
       - run: pip install pandas numpy requests
       - run: python src/historical_deep_audit.py
-      - name: Commit results
+      - name: Print deep audit results
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add results/historical_deep_*
-          git diff --cached --quiet || git commit -m "Run historical deep audit"
-          git push
+          echo "=== SUMMARY ==="
+          cat results/historical_deep_audit_summary.json
+          echo "=== BOOTSTRAP ==="
+          cat results/historical_deep_bootstrap.csv
+          echo "=== TARGET STOP SURFACE ==="
+          cat results/historical_deep_target_stop_surface.csv
+          echo "=== YEAR STABILITY ==="
+          cat results/historical_deep_year_stability.csv
+          echo "=== CLUSTER ==="
+          cat results/historical_deep_cluster.json
