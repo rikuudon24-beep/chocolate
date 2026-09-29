@@ -15,7 +15,8 @@ jobs:
       - uses: actions/setup-python@v5
         with: {python-version: "3.11"}
       - run: pip install pandas requests
-      - run: python src/market_state_strata.py
+      - run: python -u src/market_state_strata.py
+      - run: ls -l results/market_state_strata*
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Update market state strata"
