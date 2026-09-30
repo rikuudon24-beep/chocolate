@@ -97,7 +97,7 @@ def main():
     if len(e)!=95: raise RuntimeError(f"expected95 got {len(e)}")
     mid=x.volume.rolling(20).mean(); sd=x.volume.rolling(20).std(ddof=0)
     x["vol_z20"]=(x.volume-mid)/sd.replace(0,np.nan)
-    e=e.copy(); e["vol_z20"]=e.entry.map(x.vol_z20); e["group"]=np.where(e.vol_z20>=1.0,"vol_z>=1","base")
+    e=e.copy(); vol_by_time=dict(zip(x.open_time.astype(str),x.vol_z20)); e["vol_z20"]=e.event_time.astype(str).map(vol_by_time); e["group"]=np.where(e.vol_z20>=1.0,"vol_z>=1","base")
     allm=[]
     for h in [2,3,6,12]:
         z=metrics(x,e,h); z["horizon"]=h; allm.append(z)
