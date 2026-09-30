@@ -35,7 +35,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add results/forward_shadow_events.csv results/forward_shadow_returns.csv
+          git add results/forward_shadow_events.csv results/forward_shadow_returns.csv results/forward_shadow_volume_events.csv results/forward_shadow_volume_returns.csv results/forward_shadow_fixed_rule_events.csv results/forward_shadow_fixed_rule_returns.csv
           git diff --cached --quiet || git commit -m "Update forward shadow results"
           git pull --rebase origin main
           git push
