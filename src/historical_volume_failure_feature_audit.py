@@ -41,6 +41,7 @@ def main():
  x=fetch(); e=events(x)
  if len(e)!=95: raise RuntimeError(f"expected95 got {len(e)}")
  x["vol_z20"]=(x.volume-x.volume.rolling(20).mean())/x.volume.rolling(20).std(ddof=0)
+ d=x.close.diff(); ag=rma(d.clip(lower=0)); al=rma(-d.clip(upper=0)); x["rsi"]=100-100/(1+ag/al.replace(0,np.nan))
  x["ret4"]=x.close.pct_change(4); x["ret12"]=x.close.pct_change(12); x["ret24"]=x.close.pct_change(24)
  x["bb_width"]=4*x.close.rolling(20).std(ddof=0)/x.close.rolling(20).mean()
  x["atr14"]=(x.high-x.low).rolling(14).mean()/x.close
