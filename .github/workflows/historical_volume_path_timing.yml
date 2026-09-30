@@ -21,3 +21,7 @@ jobs:
           cat results/historical_volume_path_timing_summary.csv
           echo "=== ADVERSE BINS ==="
           cat results/historical_volume_path_adverse_bins.csv
+          echo "=== ARCHETYPES ==="
+          cat results/historical_volume_path_archetypes.csv
+          echo "=== ARCHETYPES BY YEAR ==="
+          cat results/historical_volume_path_archetypes_by_year.csv
