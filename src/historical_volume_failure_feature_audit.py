@@ -56,8 +56,11 @@ def main():
   elif nh<ph: arch="pullback_then_rebound"
   elif nh<999 and ph==999: arch="failure_after_adverse_move"
   else: arch="no_0_5_hit"
-  if (ph==999 and np.any(hi>=.01)) or (ph!=999 and ph>int(np.where(hi>=.01)[0][0])):
-   raise RuntimeError("threshold consistency violated")
+  p10s=np.where(hi>=.01)[0]
+  if len(p10s) and ph==999:
+   raise RuntimeError("threshold consistency violated: +1% without +0.5%")
+  if len(p10s) and ph>int(p10s[0]):
+   raise RuntimeError("threshold order violated")
   rows.append({"event_id":q.event_id,"year":q.event_time.year,"group":"vol_z>=1" if x.iloc[i].vol_z20>=1 else "base","archetype":arch,
    "rsi_reentry":x.iloc[i].rsi,"vol_z_reentry":x.iloc[i].vol_z20,"ret4_reentry":x.iloc[i].ret4,"ret12_reentry":x.iloc[i].ret12,"ret24_reentry":x.iloc[i].ret24,
    "bb_width_reentry":x.iloc[i].bb_width,"atr_pct_reentry":x.iloc[i].atr14,"rsi_entry":x.iloc[p].rsi,"vol_z_entry":x.iloc[p].vol_z20,
