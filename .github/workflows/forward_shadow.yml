@@ -1,6 +1,8 @@
 name: Forward Shadow
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
   schedule:
     # Run shortly after each UTC 4H candle close.
