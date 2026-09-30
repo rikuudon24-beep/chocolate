@@ -3,6 +3,9 @@ name: Historical Fixed Rule Ablation
 on:
   push:
     branches: [main]
+    paths:
+      - "src/historical_volume_fixed_rule_ablation.py"
+      - ".github/workflows/historical_volume_fixed_rule_ablation.yml"
   workflow_dispatch:
 
 permissions:
