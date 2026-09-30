@@ -29,8 +29,17 @@ def main():
   "all_4_fixed":(v.rsi>=30)&(v.bb_width<=0.12)&(v.atr_pct<0.02)&(v.entry_vol_z>=0)
  }
  out=[]
+ year_rows=[]
  for name,mask in states.items():
   z=v[mask]; out.append({"state":name,"n":len(z),"immediate":int((z.archetype=="immediate_rebound").sum()),"pullback":int((z.archetype=="pullback_then_rebound").sum()),"no_hit":int((z.archetype=="no_0_5_hit").sum()),"failure":int((z.archetype=="failure_after_adverse_move").sum()),"immediate_rate":float((z.archetype=="immediate_rebound").mean()) if len(z) else np.nan})
  pd.DataFrame(out).to_csv(R/"historical_volume_fixed_state_overlap.csv",index=False)
+ year_mask=(v.rsi>=30)&(v.bb_width<=0.12)&(v.atr_pct<0.02)&(v.entry_vol_z>=0)
+ for y,g in v[year_mask].groupby(v.loc[year_mask,"event_id"].map(lambda z: int(d.loc[d.event_id==z,"event_id"].iloc[0])) if False else v.loc[year_mask].index.map(lambda idx: 0)):
+  pass
+ # Year distribution using the event timestamp year carried in d.
+ vv=v[year_mask].copy()
+ vv["year"]=d.loc[vv.index,"year"]
+ print("=== FIXED 4-CONDITION YEAR DISTRIBUTION ===")
+ print(vv.groupby("year").size().to_string())
  print(pd.DataFrame(out).to_string(index=False))
 if __name__=="__main__": main()
