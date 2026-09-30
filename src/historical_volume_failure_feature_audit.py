@@ -18,7 +18,7 @@ def rma(s,n=14):
  a=s.to_numpy(float); o=np.full(len(a),np.nan)
  if len(a)<n:return pd.Series(o,index=s.index)
  o[n-1]=np.nanmean(a[:n]); k=1/n
- for i in range(n,len(a)): o[i]=(1-k)*o[i-1]+k*o[i]
+ for i in range(n,len(a)): o[i]=(1-k)*o[i-1]+k*a[i]
  return pd.Series(o,index=s.index)
 def events(x):
  c=x.close; mid=c.rolling(20).mean(); sd=c.rolling(20).std(ddof=0); lo=mid-2*sd; d=c.diff(); ag=rma(d.clip(lower=0)); al=rma(-d.clip(upper=0)); r=100-100/(1+ag/al.replace(0,np.nan))
