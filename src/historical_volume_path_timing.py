@@ -119,6 +119,12 @@ def main():
         if n>0 and p==0: return "failure_after_adverse_move"
         return "no_0_5_hit"
     a["archetype"]=a.apply(archetype,axis=1)
+    # Internal logical consistency audit: reaching +1% by high must imply +0.5% was reached first.
+    bad=a[(a["first_plus_1_h"]>0)&(a["first_plus_0_5_h"]==0)][["event_id","group","first_plus_0_5_h","first_plus_1_h"]]
+    if len(bad):
+        print("=== LOGIC AUDIT: +1 WITHOUT +0.5 ===")
+        print(bad.to_string(index=False))
+        raise RuntimeError("threshold implication violated: +1% hit without +0.5% hit")
     aa=a.groupby(["group","archetype"]).agg(n=("event_id","size"),mean_close_ret=("close_ret","mean"),median_close_ret=("close_ret","median"),plus1_rate=("first_plus_1_h",lambda s:(s>0).mean()),plus2_rate=("first_plus_2_h",lambda s:(s>0).mean())).reset_index()
     aa.to_csv(R/"historical_volume_path_archetypes.csv",index=False)
     byyear=a.groupby(["group","year","archetype"]).size().reset_index(name="n")
