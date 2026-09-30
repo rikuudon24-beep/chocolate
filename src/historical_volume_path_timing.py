@@ -110,6 +110,20 @@ def main():
     q["adverse_bin"]=pd.cut(q.max_adverse_before_plus_0_5,bins=bins,labels=labels)
     b=q.groupby(["group","adverse_bin"],observed=True).agg(n=("event_id","size"),mean_close_ret=("close_ret","mean"),hit_plus05_before_minus05=("plus_0_5_before_minus_0_5","mean")).reset_index()
     b.to_csv(R/"historical_volume_path_adverse_bins.csv",index=False)
+    # Fixed 12h path archetypes: descriptive only, no threshold search.
+    a=m[m.horizon==12].copy()
+    def archetype(r):
+        p=float(r.first_plus_0_5_h); n=float(r.first_minus_0_5_h)
+        if p>0 and (n==0 or p<n): return "immediate_rebound"
+        if n>0 and p>0 and n<p: return "pullback_then_rebound"
+        if n>0 and p==0: return "failure_after_adverse_move"
+        return "no_0_5_hit"
+    a["archetype"]=a.apply(archetype,axis=1)
+    aa=a.groupby(["group","archetype"]).agg(n=("event_id","size"),mean_close_ret=("close_ret","mean"),median_close_ret=("close_ret","median"),plus1_rate=("first_plus_1_h",lambda s:(s>0).mean()),plus2_rate=("first_plus_2_h",lambda s:(s>0).mean())).reset_index()
+    aa.to_csv(R/"historical_volume_path_archetypes.csv",index=False)
+    byyear=a.groupby(["group","year","archetype"]).size().reset_index(name="n")
+    byyear.to_csv(R/"historical_volume_path_archetypes_by_year.csv",index=False)
+
     summary={"events":95,"volume_anchor_events":int((e.vol_z20>=1).sum()),"horizons":[2,3,6,12],
              "purpose":"Historical-only timing/order audit of post-entry paths; descriptive, fixed thresholds, no parameter promotion.",
              "entry_rule":"Exact frozen 95-event rule; volume anchor is re-entry volume z20 >= 1.0.",
