@@ -21,50 +21,38 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-
       - name: Install dependencies
         run: python -m pip install -r requirements.txt
-
       - name: Run audit
         run: python src/audit_oos.py
-
       - name: Run exit research
         run: python src/exit_research.py
-
       - name: Run robustness research
         run: python src/robustness.py
       - name: Run 1D regime research
         run: python src/regime_oos.py
-
       - name: Run structural failure research
         run: python src/structural_failure_oos.py
-
       - name: Run walk-forward validation
         run: python src/walkforward_oos.py
-
       - name: Run walk-forward uncertainty analysis
         run: python src/walkforward_bootstrap.py
-
       - name: Run condition search (train/validation/test)
         run: python src/condition_search.py
-
       - name: Run rolling condition validation
         run: python src/rolling_condition_validation.py
-
       - name: Run bidirectional rolling condition validation
         run: python src/rolling_condition_bidirectional.py
-
       - name: Run volume-shock interaction validation
         run: python src/rolling_volume_interaction.py
-
+      - name: Run stratified volume control audit
+        run: python src/volume_anchor_stratified_control.py
       - name: Run untouched forward shadow validation
         run: python src/forward_shadow.py
-
       - name: Save results
         run: |
           git config user.name "github-actions[bot]"
