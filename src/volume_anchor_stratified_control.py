@@ -25,17 +25,9 @@ def fetch_klines():
     start_ms = int(START.timestamp() * 1000)
     end_ms = int(END_EXCLUSIVE.timestamp() * 1000)
     while start_ms < end_ms:
-        r = requests.get(
-            BASE_URL,
-            params={
-                "symbol": SYMBOL,
-                "interval": INTERVAL,
-                "startTime": start_ms,
-                "endTime": end_ms,
-                "limit": LIMIT,
-            },
-            timeout=30,
-        )
+        r = requests.get(BASE_URL, params={"symbol": SYMBOL, "interval": INTERVAL,
+                                           "startTime": start_ms, "endTime": end_ms,
+                                           "limit": LIMIT}, timeout=30)
         r.raise_for_status()
         batch = r.json()
         if not batch:
@@ -47,11 +39,9 @@ def fetch_klines():
         if len(batch) < LIMIT:
             break
 
-    cols = [
-        "open_time", "open", "high", "low", "close", "volume",
-        "close_time", "quote_volume", "trades",
-        "taker_base_volume", "taker_quote_volume", "ignore",
-    ]
+    cols = ["open_time", "open", "high", "low", "close", "volume",
+            "close_time", "quote_volume", "trades", "taker_base_volume",
+            "taker_quote_volume", "ignore"]
     df = pd.DataFrame(rows, columns=cols)
     df["open_time"] = pd.to_datetime(df["open_time"], unit="ms", utc=True)
     df["close_time"] = pd.to_datetime(df["close_time"], unit="ms", utc=True)
@@ -76,18 +66,14 @@ def enrich(df):
     x = df.copy()
     mid = x.close.rolling(20).mean()
     std = x.close.rolling(20).std(ddof=0)
+    x["bb_mid"] = mid
+    x["bb_lower"] = mid - 2 * std
     x["bb_width"] = (4 * std / mid).replace([np.inf, -np.inf], np.nan)
     x["rsi14"] = rsi(x.close, 14)
 
     prev_close = x.close.shift(1)
-    tr = pd.concat(
-        [
-            x.high - x.low,
-            (x.high - prev_close).abs(),
-            (x.low - prev_close).abs(),
-        ],
-        axis=1,
-    ).max(axis=1)
+    tr = pd.concat([x.high - x.low, (x.high - prev_close).abs(),
+                    (x.low - prev_close).abs()], axis=1).max(axis=1)
     x["atr14"] = tr.ewm(alpha=1 / 14, adjust=False, min_periods=14).mean()
     x["atr_pct"] = x.atr14 / x.close
 
@@ -106,12 +92,10 @@ def extract_events(x):
         cur = x.iloc[i]
         candidate = (
             i > consumed_until
-            and pd.notna(prev.close)
-            and pd.notna(cur.rsi14)
-            and pd.notna(cur.bb_width)
-            and prev.close < (x.iloc[i - 1].close.rolling(20).mean() - 2 * x.iloc[i - 1].close.rolling(20).std(ddof=0))
-            and cur.close >= (cur.close.rolling(20).mean() - 2 * cur.close.rolling(20).std(ddof=0))
-            and cur.rsi14 < 40
+            and pd.notna(prev.bb_lower) and pd.notna(cur.bb_lower)
+            and prev.close < prev.bb_lower
+            and cur.close >= cur.bb_lower
+            and pd.notna(cur.rsi14) and cur.rsi14 < 40
         )
         if not candidate:
             i += 1
@@ -122,14 +106,15 @@ def extract_events(x):
         confirm = None
         failed = False
         window_end = min(i + 6, len(x) - 2)
+
         for j in range(i + 1, window_end + 1):
             row = x.iloc[j]
-            rmin = min(rmin, float(row.rsi14)) if pd.notna(row.rsi14) else rmin
+            if pd.notna(row.rsi14):
+                rmin = min(rmin, float(row.rsi14))
             if float(row.low) < event_low:
                 failed = True
                 break
-            lower = row.close.rolling(20).mean() - 2 * row.close.rolling(20).std(ddof=0)
-            if pd.notna(lower) and float(row.close) < float(lower):
+            if pd.notna(row.bb_lower) and float(row.close) < float(row.bb_lower):
                 failed = True
                 break
             if pd.notna(row.rsi14) and float(row.rsi14) >= rmin + 5:
@@ -167,59 +152,37 @@ def add_returns(x, events):
         row["entry_price"] = entry
         for h in [2, 3, 6, 12]:
             j = idx + h
-            if j < len(x):
-                row[f"net_{h}h"] = float(x.iloc[j].close / entry - 1 - COST)
-            else:
-                row[f"net_{h}h"] = np.nan
+            row[f"net_{h}h"] = float(x.iloc[j].close / entry - 1 - COST) if j < len(x) else np.nan
         rows.append(row)
     return pd.DataFrame(rows)
 
 
 def stratify(df):
     out = df.copy()
-    out["rsi_bin"] = pd.cut(
-        out.reentry_rsi,
-        bins=[-np.inf, 20, 30, 40, np.inf],
-        labels=["<20", "20-30", "30-40", ">=40"],
-        right=False,
-    )
-    out["atr_bin"] = pd.cut(
-        out.reentry_atr_pct,
-        bins=[-np.inf, 0.01, 0.02, 0.04, np.inf],
-        labels=["<1%", "1-2%", "2-4%", ">=4%"],
-        right=False,
-    )
-    out["bb_bin"] = pd.cut(
-        out.reentry_bb_width,
-        bins=[-np.inf, 0.05, 0.12, np.inf],
-        labels=["<0.05", "0.05-0.12", ">=0.12"],
-        right=False,
-    )
+    out["rsi_bin"] = pd.cut(out.reentry_rsi, [-np.inf, 20, 30, 40, np.inf],
+                            labels=["<20", "20-30", "30-40", ">=40"], right=False)
+    out["atr_bin"] = pd.cut(out.reentry_atr_pct, [-np.inf, .01, .02, .04, np.inf],
+                            labels=["<1%", "1-2%", "2-4%", ">=4%"], right=False)
+    out["bb_bin"] = pd.cut(out.reentry_bb_width, [-np.inf, .05, .12, np.inf],
+                           labels=["<0.05", "0.05-0.12", ">=0.12"], right=False)
     out["anchor"] = out.reentry_vol_z >= 1.0
     return out
 
 
 def weighted_stratified_difference(df, strata):
     pieces = []
-    anchor = df[df.anchor]
     for keys, g in df.groupby(strata, observed=True):
-        a = g[g.anchor]
-        c = g[~g.anchor]
+        a, c = g[g.anchor], g[~g.anchor]
         if len(a) == 0 or len(c) == 0:
             continue
-        row = {k: v for k, v in zip(strata, keys if isinstance(keys, tuple) else (keys,))}
-        row["anchor_n"] = len(a)
-        row["control_n"] = len(c)
+        vals = keys if isinstance(keys, tuple) else (keys,)
+        row = {k: v for k, v in zip(strata, vals)}
+        row["anchor_n"], row["control_n"] = len(a), len(c)
         for h in [2, 3, 6, 12]:
-            av = a[f"net_{h}h"].dropna()
-            cv = c[f"net_{h}h"].dropna()
+            av, cv = a[f"net_{h}h"].dropna(), c[f"net_{h}h"].dropna()
             row[f"anchor_avg_{h}h"] = av.mean() if len(av) else np.nan
             row[f"control_avg_{h}h"] = cv.mean() if len(cv) else np.nan
-            row[f"diff_{h}h"] = (
-                row[f"anchor_avg_{h}h"] - row[f"control_avg_{h}h"]
-                if pd.notna(row[f"anchor_avg_{h}h"]) and pd.notna(row[f"control_avg_{h}h"])
-                else np.nan
-            )
+            row[f"diff_{h}h"] = row[f"anchor_avg_{h}h"] - row[f"control_avg_{h}h"]                 if pd.notna(row[f"anchor_avg_{h}h"]) and pd.notna(row[f"control_avg_{h}h"]) else np.nan
         pieces.append(row)
 
     detail = pd.DataFrame(pieces)
@@ -229,13 +192,13 @@ def weighted_stratified_difference(df, strata):
         if valid.empty:
             summary.append({"horizon": h, "strata_n": 0, "anchor_weighted_diff": np.nan})
             continue
-        weights = valid.anchor_n.to_numpy(dtype=float)
-        diffs = valid[f"diff_{h}h"].to_numpy(dtype=float)
+        w = valid.anchor_n.to_numpy(float)
+        d = valid[f"diff_{h}h"].to_numpy(float)
         summary.append({
             "horizon": h,
             "strata_n": int(len(valid)),
-            "anchor_weighted_diff": float(np.average(diffs, weights=weights)),
-            "total_anchor_n_in_matched_strata": int(weights.sum()),
+            "anchor_weighted_diff": float(np.average(d, weights=w)),
+            "total_anchor_n_in_matched_strata": int(w.sum()),
         })
     return detail, pd.DataFrame(summary)
 
@@ -247,31 +210,28 @@ def main():
         raise RuntimeError(f"Frozen event count mismatch: {len(events)} != 95")
 
     events = stratify(events)
-    detail_year_rsi, summary_year_rsi = weighted_stratified_difference(events, ["year", "rsi_bin"])
-    detail_year_atr, summary_year_atr = weighted_stratified_difference(events, ["year", "atr_bin"])
-    detail_year_bb, summary_year_bb = weighted_stratified_difference(events, ["year", "bb_bin"])
+    outputs = {}
+    for name, strata in {
+        "year_rsi": ["year", "rsi_bin"],
+        "year_atr": ["year", "atr_bin"],
+        "year_bb": ["year", "bb_bin"],
+    }.items():
+        detail, summary = weighted_stratified_difference(events, strata)
+        detail.to_csv(RESULTS / f"volume_anchor_stratified_{name}.csv", index=False)
+        outputs[name] = summary.to_dict(orient="records")
 
     events.to_csv(RESULTS / "volume_anchor_stratified_events.csv", index=False)
-    detail_year_rsi.to_csv(RESULTS / "volume_anchor_stratified_year_rsi.csv", index=False)
-    detail_year_atr.to_csv(RESULTS / "volume_anchor_stratified_year_atr.csv", index=False)
-    detail_year_bb.to_csv(RESULTS / "volume_anchor_stratified_year_bb.csv", index=False)
-
     report = {
         "event_count": int(len(events)),
         "volume_anchor_count": int(events.anchor.sum()),
         "cost": COST,
         "definition": "reentry volume z20 >= 1.0",
-        "stratifications": {
-            "year_rsi": summary_year_rsi.to_dict(orient="records"),
-            "year_atr": summary_year_atr.to_dict(orient="records"),
-            "year_bb": summary_year_bb.to_dict(orient="records"),
-        },
+        "stratifications": outputs,
         "warning": "Observational stratified control audit; not independent OOS and not a model-selection result.",
     }
     (RESULTS / "volume_anchor_stratified_control.json").write_text(
         json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8"
     )
-
     print("=== VOLUME-ANCHOR-STRATIFIED-CONTROL ===")
     print(json.dumps(report, ensure_ascii=False, indent=2))
 
