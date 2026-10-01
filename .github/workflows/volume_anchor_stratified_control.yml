@@ -1,0 +1,25 @@
+name: Volume Anchor Stratified Control
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/volume_anchor_stratified_control.py"
+      - ".github/workflows/volume_anchor_stratified_control.yml"
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m pip install -r requirements.txt
+      - run: python src/volume_anchor_stratified_control.py
+      - name: Save results
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: "Update volume anchor stratified control results"
+          add: "results/volume_anchor_stratified_*"
