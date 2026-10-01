@@ -1,0 +1,21 @@
+{
+  "events": 95,
+  "cost_round_trip": 0.001,
+  "horizons": [
+    2,
+    3,
+    6,
+    12
+  ],
+  "category_definitions": {
+    "increasing": "confirmation z20 >= re-entry z20 + 0.5 AND entry z20 >= confirmation z20 - 0.25",
+    "remains_elevated": "all three z20 values >= 1.0 after higher-priority directional categories",
+    "sharply_decreases": "entry z20 <= re-entry z20 - 1.0 AND confirmation z20 <= re-entry z20 - 0.5",
+    "decreases_then_reincreases": "confirmation z20 <= re-entry z20 - 0.5 AND entry z20 >= confirmation z20 + 0.5",
+    "other": "does not meet a fixed category"
+  },
+  "priority": "sharply_decreases > decreases_then_reincreases > increasing > remains_elevated > other",
+  "entry_volume_availability": "entry-candle volume is not known at the entry open; therefore entry-volume-based categories are diagnostic only unless explicitly delayed until entry candle close.",
+  "selection_rule": "For each rolling split, choose the category with the highest training mean 12h net return among categories with >=3 training events; validate at 2/3/6/12h. No validation tuning.",
+  "status": "research_only"
+}
