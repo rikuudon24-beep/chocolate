@@ -1,0 +1,12 @@
+{
+  "anchor_events": 34,
+  "cost": 0.001,
+  "splits": [
+    {"train":"2020-2022","validation":2023,"train_n":13,"tp":0.05,"sl":0.05,"horizon":6,"train_avg":0.00702297576,"train_pf":1.5366071086,"train_win":0.4615384615,"validation_n":6,"validation_avg":0.0006408044,"validation_pf":1.1559083403,"validation_win":0.3333333333},
+    {"train":"2020-2023","validation":2024,"train_n":19,"tp":0.05,"sl":0.05,"horizon":12,"train_avg":0.0071692969,"train_pf":1.6205891138,"train_win":0.4210526316,"validation_n":7,"validation_avg":0.0079211864,"validation_pf":1.8120585491,"validation_win":0.5714285714},
+    {"train":"2020-2024","validation":2025,"train_n":26,"tp":0.03,"sl":0.03,"horizon":12,"train_avg":0.0091077489,"train_pf":2.3017444942,"train_win":0.5769230769,"validation_n":3,"validation_avg":null,"validation_pf":null,"validation_win":null},
+    {"train":"2020-2025","validation":2026,"train_n":29,"tp":0.03,"sl":0.03,"horizon":12,"train_avg":0.0070276369,"train_pf":1.8355571546,"train_win":0.5517241379,"validation_n":5,"validation_avg":0.0177694279,"validation_pf":null,"validation_win":1.0}
+  ],
+  "selection":"Training years only; validation year never used for selection.",
+  "warning":"Small validation samples; 2025 validation has fewer than five usable observations; this is not proof of future profitability."
+}
