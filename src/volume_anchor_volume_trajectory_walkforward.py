@@ -35,13 +35,24 @@ def score(a):
     loss=-a[a<0].sum(); pf=a[a>0].sum()/loss if loss>0 else np.inf
     return float(a.mean()),float(pf),float((a>0).mean()),len(a)
 
-# Fixed, pre-registered trajectory states. Thresholds are defined before validation.
+# Fixed, pre-registered trajectory states. Each event receives exactly one class.
+def classify(q):
+    r,c,en=q.reentry_vol_z,q.confirm_vol_z,q.entry_vol_z
+    if c>=r+0.5 and en>=c:
+        return "keeps_increasing"
+    if c<=r-0.5 and en>=c+0.5:
+        return "re_increase_at_entry"
+    if en<=r-1.0:
+        return "sharp_decrease"
+    if min(r,c,en)>=0:
+        return "remains_elevated"
+    return "other"
+
 STATES=[
- ("keeps_increasing",lambda q:q.confirm_vol_z>=q.reentry_vol_z+0.5 and q.entry_vol_z>=q.confirm_vol_z),
- ("remains_elevated",lambda q:min(q.reentry_vol_z,q.confirm_vol_z,q.entry_vol_z)>=0),
- ("sharp_decrease",lambda q:q.entry_vol_z<=q.reentry_vol_z-1.0),
- ("re_increase_at_entry",lambda q:q.confirm_vol_z<=q.reentry_vol_z-0.5 and q.entry_vol_z>=q.confirm_vol_z+0.5),
- ("entry_not_lower_than_reentry",lambda q:q.entry_vol_z>=q.reentry_vol_z),
+ ("keeps_increasing",lambda q:q.trajectory=="keeps_increasing"),
+ ("remains_elevated",lambda q:q.trajectory=="remains_elevated"),
+ ("sharp_decrease",lambda q:q.trajectory=="sharp_decrease"),
+ ("re_increase_at_entry",lambda q:q.trajectory=="re_increase_at_entry"),
 ]
 
 def main():
@@ -52,13 +63,8 @@ def main():
     e=e[e.reentry_vol_z>=1].copy()
     if len(e)!=34: raise RuntimeError(f"anchor mismatch {len(e)}")
 
-    rows=[]
-    for _,q in e.iterrows():
-        q=q.copy()
-        matched=[name for name,fn in STATES if fn(q)]
-        q["trajectory"]="|".join(matched) if matched else "other"
-        rows.append(q)
-    e=pd.DataFrame(rows)
+    e=e.copy()
+    e["trajectory"]=[classify(q) for _,q in e.iterrows()]
     e.to_csv(R/"volume_anchor_volume_trajectory_events.csv",index=False)
 
     # Descriptive all-sample state table.
@@ -80,9 +86,9 @@ def main():
         for name,fn in STATES:
             z=[ret12(x,q) for _,q in tr.iterrows() if fn(q)]
             av,pf,w,n=score(z)
-            cand.append((av,pf,w,n,name))
+            cand.append((av if n>=3 else -np.inf,pf,w,n,name,av))
         cand.sort(key=lambda t:(t[0],t[1],t[2],t[3]),reverse=True)
-        av,pf,w,n,name=cand[0]
+        _,pf,w,n,name,av=cand[0]
         fn=dict(STATES)[name]
         vz=[ret12(x,q) for _,q in va.iterrows() if fn(q)]
         vav,vpf,vw,vn=score(vz)
@@ -90,7 +96,7 @@ def main():
                    "train_n":n,"train_avg":av,"train_pf":pf,"train_win":w,
                    "validation_n":vn,"validation_avg":vav,"validation_pf":vpf,"validation_win":vw})
     pd.DataFrame(wf).to_csv(R/"volume_anchor_volume_trajectory_walkforward.csv",index=False)
-    report={"anchor_events":34,"cost":COST,"horizon":H,"states":[x[0] for x in STATES],
+    report={"anchor_events":34,"cost":COST,"horizon":H,"states":[x[0] for x in STATES]+["other"],"state_counts":e.trajectory.value_counts().to_dict(),
             "walkforward":wf,"note":"Trajectory states are fixed before validation; selection uses training years only. Small validation samples remain descriptive."}
     (R/"volume_anchor_volume_trajectory_walkforward.json").write_text(json.dumps(report,indent=2,ensure_ascii=False),encoding="utf-8")
     print(json.dumps(report,indent=2,ensure_ascii=False))
