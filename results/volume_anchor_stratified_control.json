@@ -1,0 +1,87 @@
+{
+  "event_count": 95,
+  "volume_anchor_count": 34,
+  "cost": 0.001,
+  "definition": "reentry volume z20 >= 1.0",
+  "stratifications": {
+    "year_rsi": [
+      {
+        "horizon": 2,
+        "strata_n": 8,
+        "anchor_weighted_diff": 0.007952223552948025,
+        "total_anchor_n_in_matched_strata": 27
+      },
+      {
+        "horizon": 3,
+        "strata_n": 8,
+        "anchor_weighted_diff": 0.002912040170261604,
+        "total_anchor_n_in_matched_strata": 27
+      },
+      {
+        "horizon": 6,
+        "strata_n": 8,
+        "anchor_weighted_diff": 0.004277745622936701,
+        "total_anchor_n_in_matched_strata": 27
+      },
+      {
+        "horizon": 12,
+        "strata_n": 8,
+        "anchor_weighted_diff": 0.009675151899829844,
+        "total_anchor_n_in_matched_strata": 27
+      }
+    ],
+    "year_atr": [
+      {
+        "horizon": 2,
+        "strata_n": 13,
+        "anchor_weighted_diff": 0.009491017645189228,
+        "total_anchor_n_in_matched_strata": 28
+      },
+      {
+        "horizon": 3,
+        "strata_n": 13,
+        "anchor_weighted_diff": 0.007094332598265514,
+        "total_anchor_n_in_matched_strata": 28
+      },
+      {
+        "horizon": 6,
+        "strata_n": 13,
+        "anchor_weighted_diff": 0.008440759350975689,
+        "total_anchor_n_in_matched_strata": 28
+      },
+      {
+        "horizon": 12,
+        "strata_n": 13,
+        "anchor_weighted_diff": 0.016031284843850465,
+        "total_anchor_n_in_matched_strata": 28
+      }
+    ],
+    "year_bb": [
+      {
+        "horizon": 2,
+        "strata_n": 14,
+        "anchor_weighted_diff": 0.009605337045431102,
+        "total_anchor_n_in_matched_strata": 29
+      },
+      {
+        "horizon": 3,
+        "strata_n": 14,
+        "anchor_weighted_diff": 0.006129556219245034,
+        "total_anchor_n_in_matched_strata": 29
+      },
+      {
+        "horizon": 6,
+        "strata_n": 14,
+        "anchor_weighted_diff": 0.0045362884885694135,
+        "total_anchor_n_in_matched_strata": 29
+      },
+      {
+        "horizon": 12,
+        "strata_n": 14,
+        "anchor_weighted_diff": 0.0070968194082441,
+        "total_anchor_n_in_matched_strata": 29
+      }
+    ]
+  },
+  "warning": "Observational stratified control audit; not independent OOS and not a model-selection result."
+}
