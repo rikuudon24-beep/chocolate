@@ -1,0 +1,29 @@
+name: Volume trajectory research
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/volume_trajectory_walkforward.py"
+      - ".github/workflows/volume_trajectory.yml"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run trajectory audit
+        run: |
+          python -m pip install --disable-pip-version-check pandas numpy requests
+          python src/volume_trajectory_walkforward.py
+      - name: Commit results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results/volume_trajectory_*.csv results/volume_trajectory_audit.json
+          git diff --cached --quiet || git commit -m "research: audit volume trajectory"
+          git push
