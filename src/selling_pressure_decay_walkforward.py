@@ -41,7 +41,7 @@ def classify(decay_ratio, reentry_pressure, confirmation_pressure, delay_h):
         return "decay"
     if reentry_pressure > 0 and confirmation_pressure >= reentry_pressure * 1.50:
         return "increasing"
-    if confirmation_pressure <= 0.25 and decay_ratio <= 1.0:
+    if confirmation_pressure <= 0.25 and (reentry_pressure <= 0 or decay_ratio <= 1.0):
         return "low_pressure"
     return "persistent"
 
@@ -111,6 +111,8 @@ def main():
         .reset_index()
     )
     summary.to_csv(RESULTS / "selling_pressure_decay_summary.csv", index=False)
+    print("=== CATEGORY COUNTS ===")
+    print(out[["event_id", "category"]].drop_duplicates()["category"].value_counts(dropna=False).to_string())
 
     # Walk-forward: category is selected only from training data using 12h mean net return.
     cats = ["strong_decay", "decay", "low_pressure", "increasing", "persistent"]
@@ -147,7 +149,7 @@ def main():
             "strong_decay": "re-entry pressure > 0 and confirmation pressure <= 50% of re-entry",
             "decay": "re-entry pressure > 0 and confirmation pressure <= 85% of re-entry, excluding strong_decay",
             "increasing": "re-entry pressure > 0 and confirmation pressure >= 150% of re-entry",
-            "low_pressure": "confirmation pressure <= 0.25 and pressure ratio <= 1.0, after higher-priority categories",
+            "low_pressure": "confirmation pressure <= 0.25 and (re-entry pressure <= 0 or pressure ratio <= 1.0), after higher-priority categories",
             "persistent": "all remaining classified events",
         },
         "live_information_boundary": "Selection features use re-entry and confirmation candles, both closed before next-candle entry. Entry-candle pressure is diagnostic only and is never used for category selection.",
