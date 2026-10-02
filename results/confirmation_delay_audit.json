@@ -1,0 +1,13 @@
+{
+  "events": 95,
+  "cost_round_trip": 0.001,
+  "horizons": [
+    2,
+    3,
+    6,
+    12
+  ],
+  "categories": "1,2,3,4,5+ closed 4H bars from re-entry to RSI confirmation",
+  "information_boundary": "Confirmation timing is fully known before entry; no entry-candle data used.",
+  "status": "research_only"
+}
