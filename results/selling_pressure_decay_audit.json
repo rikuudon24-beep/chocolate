@@ -1,0 +1,21 @@
+{
+  "events": 95,
+  "cost_round_trip": 0.001,
+  "horizons": [
+    2,
+    3,
+    6,
+    12
+  ],
+  "definition": {
+    "downside_pressure": "max(vol_z20, 0) * max(open-close, 0) / (high-low)",
+    "strong_decay": "re-entry pressure > 0 and confirmation pressure <= 50% of re-entry",
+    "decay": "re-entry pressure > 0 and confirmation pressure <= 85% of re-entry, excluding strong_decay",
+    "increasing": "re-entry pressure > 0 and confirmation pressure >= 150% of re-entry",
+    "low_pressure": "confirmation pressure <= 0.25 and (re-entry pressure <= 0 or pressure ratio <= 1.0), after higher-priority categories",
+    "persistent": "all remaining classified events"
+  },
+  "live_information_boundary": "Selection features use re-entry and confirmation candles, both closed before next-candle entry. Entry-candle pressure is diagnostic only and is never used for category selection.",
+  "walkforward": "Each split selects the category with highest training mean 12h net return among categories with >=3 events, then validates at 2/3/6/12h.",
+  "status": "research_only"
+}
