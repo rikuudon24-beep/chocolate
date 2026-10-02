@@ -1,0 +1,13 @@
+{
+  "events": 95,
+  "cost_round_trip": 0.001,
+  "horizons": [
+    2,
+    3,
+    6,
+    12
+  ],
+  "categories": "1, 2, or 3+ consecutive closed 4H candles below the lower Bollinger Band immediately before re-entry",
+  "information_boundary": "Uses only closed candles before re-entry; no entry-candle or future data.",
+  "status": "research_only"
+}
