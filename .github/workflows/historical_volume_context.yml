@@ -13,3 +13,5 @@ jobs:
         with: {python-version: "3.11"}
       - run: pip install pandas numpy requests
       - run: PYTHONPATH=src python src/historical_volume_context.py
+      - name: Run selling pressure decay research
+        run: PYTHONPATH=src python src/selling_pressure_decay_walkforward.py
