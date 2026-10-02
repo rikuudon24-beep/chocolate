@@ -1,0 +1,13 @@
+{
+  "events": 95,
+  "cost_round_trip": 0.001,
+  "horizons": [
+    2,
+    3,
+    6,
+    12
+  ],
+  "categories": "shallow <0.25, moderate 0.25-<0.50, deep >=0.50 standard deviations below lower BB on the immediately preceding closed candle",
+  "information_boundary": "Uses only the closed candle immediately before Bollinger re-entry; no entry-candle or future data.",
+  "status": "research_only"
+}
