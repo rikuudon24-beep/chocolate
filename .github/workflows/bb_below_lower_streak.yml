@@ -1,0 +1,30 @@
+name: BB Below Lower Streak Research
+
+on:
+  push:
+    paths:
+      - "src/bb_below_lower_streak_walkforward.py"
+      - ".github/workflows/bb_below_lower_streak.yml"
+      - "src/audit_oos.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install numpy pandas requests
+      - run: python src/bb_below_lower_streak_walkforward.py
+      - name: Commit results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results/bb_below_lower_streak_*.csv results/bb_below_lower_streak_audit.json
+          git diff --cached --quiet || git commit -m "research: add BB below-lower streak results"
+          git push
