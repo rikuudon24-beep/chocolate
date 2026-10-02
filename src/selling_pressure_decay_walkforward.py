@@ -33,13 +33,15 @@ def add_pressure_features(df):
 
 def classify(decay_ratio, reentry_pressure, confirmation_pressure, delay_h):
     # Fixed definitions registered before outcome inspection.
-    if pd.isna(decay_ratio) or pd.isna(reentry_pressure) or pd.isna(confirmation_pressure):
+    if pd.isna(reentry_pressure) or pd.isna(confirmation_pressure):
         return "unclassified"
-    if reentry_pressure > 0 and confirmation_pressure <= reentry_pressure * 0.50:
+    if reentry_pressure <= 0 and confirmation_pressure <= 0.25:
+        return "low_pressure"
+    if reentry_pressure > 0 and pd.notna(decay_ratio) and confirmation_pressure <= reentry_pressure * 0.50:
         return "strong_decay"
-    if reentry_pressure > 0 and confirmation_pressure <= reentry_pressure * 0.85:
+    if reentry_pressure > 0 and pd.notna(decay_ratio) and confirmation_pressure <= reentry_pressure * 0.85:
         return "decay"
-    if reentry_pressure > 0 and confirmation_pressure >= reentry_pressure * 1.50:
+    if reentry_pressure > 0 and pd.notna(decay_ratio) and confirmation_pressure >= reentry_pressure * 1.50:
         return "increasing"
     if confirmation_pressure <= 0.25 and (reentry_pressure <= 0 or decay_ratio <= 1.0):
         return "low_pressure"
