@@ -1,0 +1,19 @@
+{
+  "events": 95,
+  "cost_round_trip": 0.001,
+  "horizons": [
+    2,
+    3,
+    6,
+    12
+  ],
+  "category_definition": {
+    "fast": "RSI confirmation minus RSI re-entry >= 3.0 points per 4H bar",
+    "moderate": ">= 1.0 and < 3.0 points per bar",
+    "slow_positive": ">= 0.0 and < 1.0 points per bar",
+    "negative": "< 0.0 points per bar"
+  },
+  "information_boundary": "Only closed re-entry and confirmation candles are used.",
+  "walkforward": "Highest training mean 12H net return among categories with >=3 events; fixed in validation.",
+  "status": "research_only"
+}
