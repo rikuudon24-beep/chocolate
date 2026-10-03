@@ -88,3 +88,5 @@ def main():
     print(json.dumps(audit,ensure_ascii=False,indent=2))
     print(summary(r).to_string(index=False)); print(wf(r).to_string(index=False))
 if __name__=="__main__": main()
+
+# workflow trigger refresh
