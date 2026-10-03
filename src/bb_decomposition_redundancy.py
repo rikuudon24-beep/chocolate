@@ -97,8 +97,8 @@ def matched_diff(e, strata):
 
 def wf(e):
     rows=[]
-    for a,b,y in SPLITS:
-        tr=e[(e.year>=a)&(e.year<=b)]
+    for train_start,train_end,y in SPLITS:
+        tr=e[(e.year>=train_start)&(e.year<=train_end)]
         va=e[e.year==y]
         candidates=[]
         for target in [True,False]:
@@ -108,7 +108,7 @@ def wf(e):
         # Fixed pre-registered target is not selected here; this is coverage/incremental audit.
         for h in H:
             t=va[va.target]; a=va[va.target & va.anchor]; v=va[va.anchor]
-            rows.append({"train":f"{a}-{b}","validation":y,"horizon":h,
+            rows.append({"train":f"{train_start}-{train_end}","validation":y,"horizon":h,
                          "target_n":len(t),"anchor_n":len(v),"target_anchor_n":len(a),
                          "target_avg":t[f"net_{h}h"].mean() if len(t) else np.nan,
                          "anchor_avg":v[f"net_{h}h"].mean() if len(v) else np.nan,
