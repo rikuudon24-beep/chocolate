@@ -22,3 +22,5 @@ for a,b,y in S:
                "avg_net":x.mean() if len(x) else np.nan,"win":(x>0).mean() if len(x) else np.nan})
 out=pd.DataFrame(rows); out.to_csv(R/"bb_slope_decomposition_volume_walkforward.csv",index=False)
 print(out.to_string(index=False))
+
+# workflow trigger refresh
