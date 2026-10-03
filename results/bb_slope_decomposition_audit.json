@@ -1,0 +1,7 @@
+{
+  "events": 95,
+  "cost": 0.001,
+  "definition": "3-bar pre-reentry BB midline and BB width movement normalized by ATR14",
+  "thresholds": "down/contracting <= -0.50; flat -0.50..0.50; up/expanding >=0.50",
+  "status": "research_only"
+}
