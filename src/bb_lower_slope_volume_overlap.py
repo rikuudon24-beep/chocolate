@@ -20,3 +20,5 @@ for (sg,a),g in m.groupby(["slope_group","volume_anchor"]):
     rows.append(rec)
 pd.DataFrame(rows).to_csv(R/"bb_lower_slope_volume_overlap_summary.csv",index=False)
 print(pd.DataFrame(rows).to_string(index=False))
+
+# workflow trigger refresh
