@@ -89,3 +89,5 @@ def main():
  (R/"taker_buy_ratio_audit.json").write_text(json.dumps({"events":95,"cost":COST,"definition":"Taker buy base volume / total volume at re-entry; buy >=55%, sell <=45%; delta3 compares re-entry ratio with preceding 3-candle aggregate; improving >=+5pp.","status":"research_only","no_threshold_search":True},ensure_ascii=False,indent=2))
  print(pd.DataFrame(out).to_string(index=False));print("\nconditions\n",pd.DataFrame(combos).to_string(index=False));print("\nOOS\n",pd.DataFrame(wf).to_string(index=False))
 main()
+
+# trigger final audit
