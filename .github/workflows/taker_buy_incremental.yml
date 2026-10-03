@@ -19,5 +19,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add results/taker_buy_incremental_*
+          git pull --rebase origin main
+git add results/taker_buy_incremental_*
           git diff --cached --quiet || (git pull --rebase origin main && git add results/taker_buy_incremental_* && git commit -m "research: taker buy incremental audit" && git push)
