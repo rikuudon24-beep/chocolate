@@ -1,0 +1,28 @@
+name: BB Streak Volume Overlap
+
+on:
+  push:
+    paths:
+      - "src/bb_streak_volume_overlap.py"
+      - "results/bb_below_lower_streak_events.csv"
+      - "results/volume_trajectory_events.csv"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - run: pip install pandas numpy
+      - run: python src/bb_streak_volume_overlap.py
+      - name: Commit results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results/bb_streak_volume_overlap_*.csv
+          git diff --cached --quiet || git commit -m "research: add BB streak volume overlap"
+          git push
