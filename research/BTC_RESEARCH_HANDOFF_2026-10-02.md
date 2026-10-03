@@ -162,33 +162,57 @@ Core:
 - src/volume_anchor_adverse_walkforward.py
 - src/volume_anchor_failure_filter_walkforward.py
 
+## Latest research update — BB lower-band slope × volume anchor
+### BB lower-band slope
+A pre-registered structural feature was tested on the same frozen 95 events:
+- Lower Bollinger Band movement over the 3 immediately preceding closed candles, normalized by ATR(14).
+- Categories fixed before outcome inspection: falling <= -0.50 ATR; flat -0.50..0.50 ATR; rising >= 0.50 ATR.
+- Counts: falling 73, flat 20, rising 2.
+- Full-sample falling net averages after 0.10% RT cost: 2 +0.0968%, 3 +0.1382%, 6 -0.2428%, 12 +0.4282%.
+- Rolling WF selected falling in all four splits.
+- Validation averages for falling:
+  - 2023: +0.311%, +0.251%, +0.287%, +1.280%
+  - 2024: -0.159%, +0.625%, +0.394%, +0.542%
+  - 2025: -0.441%, -0.324%, -0.831%, +0.591%
+  - 2026: +1.288%, +1.450%, +0.933%, +1.956%
+Interpretation: structurally interesting and more persistent than BB-depth/streak features, but not sufficient for promotion.
+
+### BB lower-band slope × re-entry volume anchor
+- volume anchor = reentry vol_z20 >= 1.0
+- slope group = falling vs not_falling
+Full historical:
+- falling + volume anchor: n=26; avg net +0.707%, +0.994%, +0.390%, +1.486% at 2/3/6/12 bars.
+- falling without volume anchor: n=47; -0.241%, -0.335%, -0.593%, -0.157%.
+- not_falling + volume anchor: n=8; negative at all horizons.
+- not_falling without anchor: n=14; negative at all horizons.
+
+Rolling WF combo selection:
+- All four training periods selected the same falling__vol1 combination.
+- Validation:
+  - 2023 n5: +0.265%, +0.336%, +0.210%, +2.636%
+  - 2024 n7: -0.293%, +0.878%, +0.154%, -0.145%
+  - 2025 n3: +0.618%, +0.125%, -2.359%, +0.233%
+  - 2026 n3: +2.151%, +2.238%, +1.039%, +3.155%
+- Weighted across 18 OOS events: 2 +0.421%, 3 +0.829%, 6 -0.102%, 12 +1.241%.
+Important: yearly validation samples are only 3–7 events. Promising research candidate, not proof.
+
+### Incremental check against volume anchor alone
+- 2024 and 2025 all volume-anchor events were already falling, so the slope filter changes nothing.
+- 2023 falling+anchor reduced n from 6 to 5 and lowered 2/3-bar average while improving 12-bar average.
+- 2026 falling+anchor reduced n from 5 to 3 and improved all four horizons.
+Conclusion: current evidence does not establish a consistent independent improvement over volume anchor alone.
+
+### Current status
+**HOLD / research-only.**
+Do not deploy or treat the combo as a proven edge.
+
 ## Immediate next research task
-Do NOT ask for permission. Continue autonomously.
+1. Decompose lower-BB slope into 20-period BB midline slope and BB width/standard-deviation slope.
+2. Test whether falling lower-BB is a proxy for midline trend, volatility expansion, or a distinct structural feature.
+3. Use the same four walk-forward splits, 0.10% RT cost, horizons 2/3/6/12.
+4. If decomposition shows independent information, test only a small pre-registered interaction with volume anchor.
+5. Preserve all prior results and keep status HOLD unless independent evidence improves.
 
-Test the **volume trajectory from re-entry -> RSI recovery confirmation -> entry**.
-
-Use fixed, pre-registered categories based only on information available before entry:
-1. volume keeps increasing
-2. volume remains elevated
-3. volume sharply decreases
-4. volume decreases then re-increases at entry
-
-Recommended implementation:
-- Anchor events on exact frozen 95-event denominator where possible.
-- Use reentry vol_z20, confirmation-window volume z20 values, and entry vol_z20.
-- Avoid any feature that uses future candles beyond the entry timestamp.
-- Define categories before looking at returns.
-- First run descriptive full-history path audit.
-- Then run rolling walk-forward selection/validation with the same four splits:
-  - 2020-22 -> 2023
-  - 2020-23 -> 2024
-  - 2020-24 -> 2025
-  - 2020-25 -> 2026
-- Cost 0.10% RT.
-- Horizons 2/3/6/12.
-- Do not optimize thresholds on validation/test.
-- Do not promote any rule automatically.
-- If samples are too small, report that explicitly and continue to the next independent diagnostic.
 
 ## Research philosophy
 - Past data is sufficient for research; do not wait unnecessarily for future data.
