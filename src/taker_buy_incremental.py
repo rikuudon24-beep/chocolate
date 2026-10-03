@@ -44,3 +44,5 @@ for a,bnd,y in [(2020,2022,2023),(2020,2023,2024),(2020,2024,2025),(2020,2025,20
 pd.DataFrame(wf).to_csv(R/"taker_buy_incremental_oos.csv",index=False)
 print(pd.DataFrame(rows).to_string(index=False))
 print("\nOOS\n",pd.DataFrame(wf).to_string(index=False))
+
+# trigger
