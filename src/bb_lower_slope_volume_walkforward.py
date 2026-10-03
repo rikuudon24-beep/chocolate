@@ -5,7 +5,7 @@ SPLITS=[(2020,2022,2023),(2020,2023,2024),(2020,2024,2025),(2020,2025,2026)]
 H=[2,3,6,12]
 
 m=pd.read_csv(R/"bb_lower_slope_volume_overlap_events.csv")
-m["combo"]=m["slope_group"]+"__vol"+m["volume_anchor"].astype(int)
+m["combo"]=m["slope_group"]+"__vol"+m["volume_anchor"].astype(str)
 
 rows=[]
 for a,b,y in SPLITS:
