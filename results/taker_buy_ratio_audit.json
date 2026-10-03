@@ -1,0 +1,7 @@
+{
+  "events": 95,
+  "cost": 0.001,
+  "definition": "Taker buy base volume / total volume at re-entry; buy >=55%, sell <=45%; delta3 compares re-entry ratio with preceding 3-candle aggregate; improving >=+5pp.",
+  "status": "research_only",
+  "no_threshold_search": true
+}
