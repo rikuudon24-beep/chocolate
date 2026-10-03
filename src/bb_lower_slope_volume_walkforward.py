@@ -28,3 +28,5 @@ for a,b,y in SPLITS:
 out=pd.DataFrame(rows)
 out.to_csv(R/"bb_lower_slope_volume_walkforward.csv",index=False)
 print(out.to_string(index=False))
+
+# workflow trigger refresh
