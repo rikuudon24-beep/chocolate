@@ -12,10 +12,10 @@ conds={
 "improving":x.improving,
 "anchor":x.anchor_y.astype(bool),
 "bb_target":x.bb_target,
-"anchor_and_improving":x.anchor.astype(bool)&x.improving,
+"anchor_and_improving":x.anchor_y.astype(bool)&x.improving,
 "bb_and_improving":x.bb_target&x.improving,
-"bb_anchor":x.bb_target&x.anchor.astype(bool),
-"bb_anchor_improving":x.bb_target&x.anchor.astype(bool)&x.improving,
+"bb_anchor":x.bb_target&x.anchor_y.astype(bool),
+"bb_anchor_improving":x.bb_target&x.anchor_y.astype(bool)&x.improving,
 }
 rows=[]
 for name,m in conds.items():
@@ -37,7 +37,7 @@ for label,strata in [("year_anchor",["year","anchor"]),("year_bb_anchor",["year"
 wf=[]
 for a,bnd,y in [(2020,2022,2023),(2020,2023,2024),(2020,2024,2025),(2020,2025,2026)]:
  g=x[x.year==y]
- for name,m in {"improving":g.improving,"anchor_improving":g.anchor_y.astype(bool)&g.improving,"bb_anchor_improving":g.bb_target&g.anchor.astype(bool)&g.improving}.items():
+ for name,m in {"improving":g.improving,"anchor_improving":g.anchor_y.astype(bool)&g.improving,"bb_anchor_improving":g.bb_target&g.anchor_y.astype(bool)&g.improving}.items():
   z=g[m];r={"train":f"{a}-{bnd}","year":y,"condition":name,"n":len(z)}
   for h in H:r[f"avg_{h}h"]=z[f"net_{h}h"].mean()
   wf.append(r)
