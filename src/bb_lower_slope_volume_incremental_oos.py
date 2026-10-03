@@ -17,3 +17,5 @@ for a,b,y in SPLITS:
                          "avg_net":x.mean() if len(x) else None,"win":(x>0).mean() if len(x) else None})
 out=pd.DataFrame(rows); out.to_csv(R/"bb_lower_slope_volume_incremental_oos.csv",index=False)
 print(out.to_string(index=False))
+
+# workflow trigger refresh
