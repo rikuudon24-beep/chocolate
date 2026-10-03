@@ -84,3 +84,5 @@ def main():
     json.dump({"events":95,"cost":COST,"definition":"3-bar pre-reentry BB midline and BB width movement normalized by ATR14","thresholds":"down/contracting <= -0.50; flat -0.50..0.50; up/expanding >=0.50","status":"research_only"},open(R/"bb_slope_decomposition_audit.json","w"),ensure_ascii=False,indent=2)
     print(summarize(r).to_string(index=False)); print("\nWF\n"+wf(r).to_string(index=False))
 if __name__=="__main__": main()
+
+# workflow trigger refresh
