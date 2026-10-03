@@ -1,0 +1,77 @@
+train,validation,horizon,target_n,anchor_n,target_anchor_n,target_avg,anchor_avg,target_anchor_avg
+"    event_id                 event_time  ... anchor_label target_label
+48        49  2023-08-01T12:00:00+00:00  ...         vol1  flat_expand
+50        51  2023-09-25T12:00:00+00:00  ...         vol1  flat_expand
+
+[2 rows x 27 columns]-2022",2023,2,9,6,2,0.005283189909790622,0.003881034151208662,0.003605024046426653
+"    event_id                 event_time  ... anchor_label target_label
+48        49  2023-08-01T12:00:00+00:00  ...         vol1  flat_expand
+50        51  2023-09-25T12:00:00+00:00  ...         vol1  flat_expand
+
+[2 rows x 27 columns]-2022",2023,3,9,6,2,0.002634645241199237,0.004529097627188117,-0.00013848906302049713
+"    event_id                 event_time  ... anchor_label target_label
+48        49  2023-08-01T12:00:00+00:00  ...         vol1  flat_expand
+50        51  2023-09-25T12:00:00+00:00  ...         vol1  flat_expand
+
+[2 rows x 27 columns]-2022",2023,6,9,6,2,0.0027544751990292962,0.0006408618488158996,-0.004537126089140308
+"    event_id                 event_time  ... anchor_label target_label
+48        49  2023-08-01T12:00:00+00:00  ...         vol1  flat_expand
+50        51  2023-09-25T12:00:00+00:00  ...         vol1  flat_expand
+
+[2 rows x 27 columns]-2022",2023,12,9,6,2,0.004694553404615516,0.020448286631402596,-0.0004025237194968936
+"    event_id                 event_time  ... anchor_label target_label
+56        57  2024-04-17T16:00:00+00:00  ...         vol1  flat_expand
+67        68  2024-12-10T16:00:00+00:00  ...         vol1  flat_expand
+
+[2 rows x 27 columns]-2023",2024,2,3,7,2,-0.003010612094064058,-0.002925052213588519,0.0085101155296895
+"    event_id                 event_time  ... anchor_label target_label
+56        57  2024-04-17T16:00:00+00:00  ...         vol1  flat_expand
+67        68  2024-12-10T16:00:00+00:00  ...         vol1  flat_expand
+
+[2 rows x 27 columns]-2023",2024,3,3,7,2,0.012174092006296452,0.008778505807301535,0.0263972733566199
+"    event_id                 event_time  ... anchor_label target_label
+56        57  2024-04-17T16:00:00+00:00  ...         vol1  flat_expand
+67        68  2024-12-10T16:00:00+00:00  ...         vol1  flat_expand
+
+[2 rows x 27 columns]-2023",2024,6,3,7,2,0.009849620047094776,0.001541562926450944,0.015985555938043572
+"    event_id                 event_time  ... anchor_label target_label
+56        57  2024-04-17T16:00:00+00:00  ...         vol1  flat_expand
+67        68  2024-12-10T16:00:00+00:00  ...         vol1  flat_expand
+
+[2 rows x 27 columns]-2023",2024,12,3,7,2,0.026672530525637488,-0.0014453433912683072,0.02683882315778352
+"    event_id                 event_time  ... anchor_label target_label
+81        82  2025-11-21T12:00:00+00:00  ...         vol1  flat_expand
+
+[1 rows x 27 columns]-2024",2025,2,6,3,1,-0.002912956931954036,0.00617748916486401,0.0017453024784671598
+"    event_id                 event_time  ... anchor_label target_label
+81        82  2025-11-21T12:00:00+00:00  ...         vol1  flat_expand
+
+[1 rows x 27 columns]-2024",2025,3,6,3,1,-0.002528914472225826,0.0012476514827672507,0.003402839116344648
+"    event_id                 event_time  ... anchor_label target_label
+81        82  2025-11-21T12:00:00+00:00  ...         vol1  flat_expand
+
+[1 rows x 27 columns]-2024",2025,6,6,3,1,-0.004759465691885345,-0.02359177574803517,0.0037556505041603802
+"    event_id                 event_time  ... anchor_label target_label
+81        82  2025-11-21T12:00:00+00:00  ...         vol1  flat_expand
+
+[1 rows x 27 columns]-2024",2025,12,6,3,1,0.009470418404713668,0.0023252044519017634,0.035999595056602884
+"    event_id                 event_time  ... anchor_label target_label
+89        90  2026-04-28T12:00:00+00:00  ...         vol1  flat_expand
+90        91  2026-05-23T12:00:00+00:00  ...         vol1  flat_expand
+
+[2 rows x 27 columns]-2025",2026,2,5,5,2,0.01039494833392729,0.01388569085081719,0.007909908521446019
+"    event_id                 event_time  ... anchor_label target_label
+89        90  2026-04-28T12:00:00+00:00  ...         vol1  flat_expand
+90        91  2026-05-23T12:00:00+00:00  ...         vol1  flat_expand
+
+[2 rows x 27 columns]-2025",2026,3,5,5,2,0.0063412477141888916,0.009419490135334007,-0.0025788219414863978
+"    event_id                 event_time  ... anchor_label target_label
+89        90  2026-04-28T12:00:00+00:00  ...         vol1  flat_expand
+90        91  2026-05-23T12:00:00+00:00  ...         vol1  flat_expand
+
+[2 rows x 27 columns]-2025",2026,6,5,5,2,0.007407743969792757,0.0024982465873886195,-0.0027292531829923306
+"    event_id                 event_time  ... anchor_label target_label
+89        90  2026-04-28T12:00:00+00:00  ...         vol1  flat_expand
+90        91  2026-05-23T12:00:00+00:00  ...         vol1  flat_expand
+
+[2 rows x 27 columns]-2025",2026,12,5,5,2,0.010614387208225873,0.026336250600216427,0.009482016671461979

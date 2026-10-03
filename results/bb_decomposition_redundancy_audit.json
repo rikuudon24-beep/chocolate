@@ -1,0 +1,10 @@
+{
+  "events": 95,
+  "target_count": 39,
+  "anchor_count": 34,
+  "target_anchor_count": 13,
+  "definition": "target = pre-reentry BB mid slope flat (-0.50..0.50 ATR) AND BB width slope expanding (>=0.50 ATR); volume anchor = reentry vol_z20 >=1.0",
+  "cost": 0.001,
+  "status": "research_only",
+  "interpretation": "Redundancy/matched-control audit; no threshold search and no deployment inference."
+}
