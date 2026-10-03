@@ -15,6 +15,9 @@ SPLITS=[(2020,2022,2023),(2020,2023,2024),(2020,2024,2025),(2020,2025,2026)]
 # <= -0.50 ATR = falling, -0.50..0.50 = flat, >= 0.50 ATR = rising.
 def build(df):
     ev=extract_events(df)
+    prev_close=df["close"].shift(1)
+    tr=pd.concat([df["high"]-df["low"], (df["high"]-prev_close).abs(), (df["low"]-prev_close).abs()], axis=1).max(axis=1)
+    df=df.copy(); df["atr14"]=tr.rolling(14).mean()
     idx={pd.Timestamp(t):i for i,t in enumerate(df["open_time"])}
     rows=[]
     for _,e in ev.iterrows():
