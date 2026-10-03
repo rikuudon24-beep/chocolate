@@ -257,3 +257,42 @@ User wants the work to continue autonomously after saying "進めて/続けて/�
 Do not repeatedly ask for approval.
 Give concise milestone updates and concrete results.
 The user is smartphone-centered and does not want unnecessary manual steps.
+
+## Latest research update — BB decomposition redundancy / matched controls
+### Independence audit
+The frozen 95-event denominator was preserved. The target regime is fixed as pre-reentry BB midline slope flat (-0.50..0.50 ATR) AND BB width slope expanding (>=0.50 ATR); volume anchor remains re-entry vol_z20 >= 1.0.
+- target regime: 39/95
+- volume anchor: 34/95
+- overlap: 13/95
+
+Within the target regime:
+- volume-anchor events (n=13): net averages +1.169%, +1.421%, +1.689%, +2.487% at 2/3/6/12h.
+- target without volume anchor (n=26): -0.009%, +0.057%, +0.221%, +0.468%.
+This reinforces that volume shock is a major concentration variable.
+
+### Matched controls
+Using identical event IDs and fixed pre-entry strata:
+- year x ATR-bin matched target-vs-control weighted differences: +0.382%, +0.527%, +1.724%, +1.368% at 2/3/6/12h.
+- year x BB-width-bin: +0.592%, +1.015%, +1.989%, +2.050%.
+- year x ATR-bin x volume-anchor: -0.058%, +0.365%, +1.682%, +1.677%.
+- year x BB-width-bin x volume-anchor: +0.295%, +0.585%, +1.740%, +1.656%.
+Interpretation: the decomposition regime is not explained away by ATR/BB-width state alone. Even within the volume-anchor subset, a positive residual difference remains at 6/12h. However, this is still observational matched-control evidence, not independent OOS proof.
+
+### OOS coverage
+The fixed target+volume combination remains sparse:
+- 2023: 2 events
+- 2024: 2 events
+- 2025: 1 event
+- 2026: 2 events
+Therefore the apparent incremental effect cannot yet be treated as a stable deployable edge.
+
+### Current interpretation
+The research focus should now move away from arbitrary BB threshold additions. The evidence currently supports a structural hypothesis:
+**a lower-BB re-entry occurring while the BB midline is relatively flat, BB width is expanding, and re-entry volume is unusually elevated may describe a distinct rebound regime.**
+This remains a hypothesis until an independent forward/OOS sample accumulates enough events.
+
+### Next task
+1. Keep the fixed historical rule frozen; do not tune thresholds from these results.
+2. Continue Forward Shadow using the existing frozen setup.
+3. Run one compact pre-registered OOS/forward monitor for the structural regime, but do not promote it to live trading.
+4. If independent evidence remains sparse, stop adding technical filters and move to an independent feature family rather than further BB decomposition.
