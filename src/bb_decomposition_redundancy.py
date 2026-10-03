@@ -43,7 +43,7 @@ def build(x):
              "target": mc=="flat" and wc=="expanding",
              "anchor": float(x.iloc[i].vol_z20)>=1.0,
              "reentry_atr_pct":float(x.iloc[i].atr14/x.iloc[i].close),
-             "reentry_bb_width_pct":float(x.iloc[i].bb_width_pct.iloc[i]) if hasattr(x.bb_width_pct.iloc[i],"__float__") else float(x.iloc[i].bb_width_pct),
+             "reentry_bb_width_pct":float(x.iloc[i].bb_width_pct),
              "entry_index":entry_i}
         for h in H:
             j=entry_i+h
