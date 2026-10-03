@@ -23,7 +23,7 @@ for name,m in conds.items():
  for h in H:r[f"avg_{h}h"]=g[f"net_{h}h"].mean()
  rows.append(r)
 # fixed incremental comparison: improving vs non-improving inside year x anchor, and year x bb_target x anchor
-for label,strata in [("year_anchor",["year","anchor"]),("year_bb_anchor",["year","bb_target","anchor"])]:
+for label,strata in [("year_anchor",["year","anchor_y"]),("year_bb_anchor",["year","bb_target","anchor_y"])]:
  parts=[]
  for keys,g in x.groupby(strata,observed=True):
   if not isinstance(keys,tuple):keys=(keys,)
