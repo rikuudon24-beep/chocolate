@@ -1,0 +1,14 @@
+{
+  "events": 95,
+  "cost_round_trip": 0.001,
+  "horizons": [
+    2,
+    3,
+    6,
+    12
+  ],
+  "definition": "3-bar lower Bollinger Band movement immediately before re-entry, normalized by ATR(14) at the pre-reentry closed candle.",
+  "categories": "falling <= -0.50 ATR, flat -0.50..0.50 ATR, rising >= 0.50 ATR",
+  "information_boundary": "Only closed candles before re-entry; no confirmation/entry/future information.",
+  "status": "research_only"
+}
