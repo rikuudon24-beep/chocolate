@@ -206,12 +206,40 @@ Conclusion: current evidence does not establish a consistent independent improve
 **HOLD / research-only.**
 Do not deploy or treat the combo as a proven edge.
 
+## Latest research update — BB lower-band slope decomposition
+### Decomposition result
+The falling lower-BB signal was decomposed into 3-bar pre-reentry BB midline slope and BB width slope, both ATR-normalized, with fixed ±0.50 ATR categories. Frozen denominator remained 95.
+
+Full-sample results:
+- mid down + width expanding: n28; 2/3/6/12 net averages -0.171%, -0.307%, -1.134%, -0.068%.
+- mid flat + width expanding: n39; +0.383%, +0.511%, +0.710%, +1.141%.
+- mid down + width contracting: n6; negative at all horizons.
+This indicates the prior falling lower-BB signal is not simply a falling midline/trend signal. The most stable decomposition cell was midline flat + width expanding.
+
+Rolling WF selected flat + expanding in all four splits:
+- 2023: n9; +0.528%, +0.263%, +0.275%, +0.469%
+- 2024: n3; -0.301%, +1.217%, +0.985%, +2.667%
+- 2025: n6; -0.291%, -0.253%, -0.476%, +0.947%
+- 2026: n5; +1.039%, +0.634%, +0.741%, +1.061%
+Interpretation: more consistent than raw lower-BB slope, but samples remain small and 2025 short-horizon results were weak.
+
+### Decomposition × volume anchor
+A small pre-registered interaction with re-entry volume anchor was tested. All four rolling splits selected mid flat + width expanding + volume anchor. Validation counts were only 1–2 per year:
+- 2023 n2: 2 +0.361%, 3 -0.014%, 6 -0.454%, 12 -0.040%
+- 2024 n2: 2 +0.851%, 3 +2.640%, 6 +1.599%, 12 +2.684%
+- 2025 n1: 2 +0.175%, 3 +0.340%, 6 +0.376%, 12 +3.600%
+- 2026 n2: 2 +0.791%, 3 -0.258%, 6 -0.273%, 12 +0.948%
+Too sparse to establish an independent interaction effect. Research lead only.
+
+### Current status
+**HOLD / research-only.** No deployment decision has changed.
+
 ## Immediate next research task
-1. Decompose lower-BB slope into 20-period BB midline slope and BB width/standard-deviation slope.
-2. Test whether falling lower-BB is a proxy for midline trend, volatility expansion, or a distinct structural feature.
-3. Use the same four walk-forward splits, 0.10% RT cost, horizons 2/3/6/12.
-4. If decomposition shows independent information, test only a small pre-registered interaction with volume anchor.
-5. Preserve all prior results and keep status HOLD unless independent evidence improves.
+1. Stop adding arbitrary BB filters. Structural evidence now points to midline roughly flat + BB width expanding, with volume shock potentially concentrating it.
+2. Test redundancy with existing ATR/BB-width state features using matched/stratified controls rather than another threshold sweep.
+3. Compare the regime against the existing volume-anchor signal on identical event IDs, including incremental OOS coverage.
+4. If it survives, perform one final compact pre-registered rule using only pre-entry information.
+5. Continue Forward Shadow in parallel; do not use future observations to tune the frozen historical rule.
 
 
 ## Research philosophy
