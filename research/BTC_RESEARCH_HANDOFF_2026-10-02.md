@@ -296,3 +296,25 @@ This remains a hypothesis until an independent forward/OOS sample accumulates en
 2. Continue Forward Shadow using the existing frozen setup.
 3. Run one compact pre-registered OOS/forward monitor for the structural regime, but do not promote it to live trading.
 4. If independent evidence remains sparse, stop adding technical filters and move to an independent feature family rather than further BB decomposition.
+
+## Latest independent feature research — Taker Buy Ratio
+A separate feature family was tested from Binance Spot kline fields: taker-buy base volume / total base volume at the re-entry candle, plus its change versus the preceding 3-candle aggregate. Fixed semantic states were pre-registered: buy >=55%, sell <=45%, neutral otherwise; improving = +5 percentage points or more versus the preceding 3-candle aggregate.
+
+Results on the same frozen 95 events:
+- buy state: n=6; net averages -0.047%, -0.042%, -0.288%, +0.036% at 2/3/6/12h.
+- improving state: n=20; +0.347%, +0.419%, +0.272%, +0.926%.
+- anchor + improving: n=5; +1.095%, +1.088%, +0.593%, +0.713%.
+The simple buy-ratio level is not useful by itself; the change/improvement state is more interesting.
+
+Rolling OOS coverage for improving:
+- 2023 n2: 2 -0.123%, 3 -0.088%, 6 -1.138%, 12 +0.890%
+- 2024 n2: 2 +1.477%, 3 +1.623%, 6 +1.896%, 12 -0.549%
+- 2025 n8: 2 -0.575%, 3 -0.419%, 6 +0.081%, 12 +0.836%
+- 2026 n4: 2 +1.003%, 3 +1.302%, 6 +1.396%, 12 +2.755%
+Interpretation: promising as an independent feature hypothesis, especially at 12h, but not stable enough and not sufficiently independent-OOS validated for promotion.
+
+Current research direction:
+- Keep BB structural hypothesis fixed rather than adding more BB thresholds.
+- Continue testing Taker Buy Ratio improvement as an independent feature and its incremental contribution to the volume/BB regime.
+- If the interaction remains sparse, move to forward monitoring rather than further historical threshold mining.
+- Status remains HOLD / research-only.
