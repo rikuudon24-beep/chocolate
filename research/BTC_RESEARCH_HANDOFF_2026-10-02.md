@@ -358,3 +358,35 @@ The historical technical-filter branch is now considered sufficiently explored f
 - Taker incremental audit: completed and saved.
 - Forward Shadow: continuing independently.
 - Live trading/deployment: not approved; status remains HOLD.
+
+
+## Latest independent feature research — Futures Funding Rate
+A separate derivatives feature was tested using Binance USDⓈ-M BTCUSDT funding-rate archives. The information boundary was corrected to use only the most recent funding settlement **strictly before** the frozen re-entry timestamp; same-timestamp funding observations are excluded to avoid lookahead ambiguity.
+
+Fixed semantic states were used without threshold search:
+- positive: funding >= +0.01%
+- negative: funding <= -0.01%
+- neutral: otherwise
+- easing/tightening: change versus the immediately prior funding settlement of at least 0.01 percentage point in the corresponding direction.
+
+### Full frozen-event result
+Across the 95 events:
+- positive n=42: 2/3/6/12h net averages -0.303%, -0.639%, -1.103%, -1.008%
+- neutral n=51: +0.301%, +0.461%, +0.198%, +1.025%
+- negative n=2: too sparse; mixed/negative overall
+- easing n=6: mixed, with 6h negative and 12h slightly positive
+- tightening n=4: negative across all horizons, but far too sparse for inference
+
+The full-sample contrast suggests that elevated positive funding may coincide with a weaker rebound regime, while neutral funding is more favorable. This is a useful hypothesis, not a proven causal effect.
+
+### OOS check
+Fixed state coverage by validation year was sparse for most states:
+- positive: 2023 n7, 2024 n6, 2025 n3, 2026 n1.
+- positive-state OOS results changed materially by year: 2023 and 2024 were positive at most short horizons, 2025 was strongly negative, and 2026 was positive but n=1.
+- negative/easing/tightening had zero qualifying events in the 2023-2026 validation periods under the fixed definitions.
+
+### Conclusion
+Funding Rate is a genuinely independent feature family and therefore more informative for the research program than adding further BB/Taker thresholds. However, the current fixed state test does **not** establish stable OOS edge. The interesting hypothesis is **positive funding may weaken the Spot rebound after the lower-BB re-entry**, but the validation sample is insufficient and regime-dependent.
+
+**Decision: HOLD / research-only.**
+Do not convert funding state into a live filter yet. Preserve the result and move toward a compact pre-registered interaction test only if it can be done without threshold mining; otherwise prioritize Forward Shadow and independent validation.
