@@ -12,7 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-        with: {python-version: "3.11"}
+        with:
+          python-version: "3.11"
       - run: pip install pandas
       - run: python src/taker_buy_incremental.py
       - name: Commit
@@ -20,5 +21,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git pull --rebase origin main
-git add results/taker_buy_incremental_*
-          git diff --cached --quiet || (git pull --rebase origin main && git add results/taker_buy_incremental_* && git commit -m "research: taker buy incremental audit" && git push)
+          git add results/taker_buy_incremental_*
+          git diff --cached --quiet || (git commit -m "research: taker buy incremental audit" && git push)
