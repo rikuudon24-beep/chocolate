@@ -22,8 +22,10 @@ for _,e in events.iterrows():
         z=zipfile.ZipFile(BytesIO(rr.content))
         name=z.namelist()[0]
         cache[key]=pd.read_csv(z.open(name))
-        cache[key]["fundingTime"]=pd.to_datetime(cache[key]["fundingTime"],unit="ms",utc=True)
-        cache[key]["fundingRate"]=cache[key]["fundingRate"].astype(float)
+        time_col="fundingTime" if "fundingTime" in cache[key].columns else "calc_time"
+        rate_col="fundingRate" if "fundingRate" in cache[key].columns else "last_funding_rate"
+        cache[key]["fundingTime"]=pd.to_datetime(cache[key][time_col],unit="ms",utc=True)
+        cache[key]["fundingRate"]=pd.to_numeric(cache[key][rate_col],errors="coerce")
     f0=cache[key]
     before=f0[f0.fundingTime<=ts]
     current=before.iloc[-1] if len(before) else f0.iloc[0]
