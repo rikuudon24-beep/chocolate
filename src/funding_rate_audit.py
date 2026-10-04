@@ -6,7 +6,7 @@ R=Path(__file__).resolve().parents[1]/"results"
 H=[2,3,6,12]
 BASE="https://fapi.binance.com/fapi/v1/fundingRate"
 
-events=pd.read_csv(R/"taker_buy_ratio_events.csv")[["event_id","reentry_time"]+[f"net_{h}h" for h in H]]
+events=pd.read_csv(R/"taker_buy_ratio_events.csv")[["event_id"]+[f"net_{h}h" for h in H]].merge(pd.read_csv(R/"oos_events.csv")[["event_id","reentry_time"]],on="event_id",how="inner")
 events["reentry_time"]=pd.to_datetime(events["reentry_time"],utc=True)
 rows=[]
 for _,e in events.iterrows():
