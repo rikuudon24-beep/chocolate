@@ -76,3 +76,4 @@ pd.DataFrame(wf).to_csv(R/"funding_rate_audit_oos.csv",index=False)
 
 print(summary.to_string(index=False))
 print("\nOOS\n",pd.DataFrame(wf).to_string(index=False))
+# trigger after workflow registration
