@@ -22,3 +22,5 @@ jobs:
           git pull --rebase --autostash origin main
           git add results/funding_incremental_*
           git diff --cached --quiet || (git commit -m "research: funding incremental audit" && git push)
+
+# trigger run
