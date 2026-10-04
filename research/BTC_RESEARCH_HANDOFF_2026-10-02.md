@@ -318,3 +318,43 @@ Current research direction:
 - Continue testing Taker Buy Ratio improvement as an independent feature and its incremental contribution to the volume/BB regime.
 - If the interaction remains sparse, move to forward monitoring rather than further historical threshold mining.
 - Status remains HOLD / research-only.
+
+
+## Latest research update — Taker Buy Ratio incremental contribution audit
+The Taker Buy Ratio improvement feature was tested for incremental contribution against the existing volume anchor and BB structural regime, using the same frozen 95 event IDs and no threshold search.
+
+Fixed definitions remained unchanged:
+- improving = re-entry taker-buy ratio improved by >=5 percentage points versus the preceding 3-candle aggregate.
+- volume anchor = re-entry vol_z20 >= 1.0.
+- BB target = pre-reentry BB midline slope flat AND BB width slope expanding, using the already frozen +/-0.50 ATR boundaries.
+
+### Incremental findings
+Within year x volume-anchor strata, the improving-vs-non-improving differences were inconsistent:
+- 2025 anchor: 2h -0.850%, 3h -0.469%, 6h +0.910%, 12h -4.736% (n=1 improving vs 2 controls).
+- 2026 anchor: 2h -1.980%, 3h -0.829%, 6h +0.586%, 12h -1.883% (n=2 vs 3).
+- 2022 anchor showed positive differences, but only n=1 improving vs 6 controls.
+Thus no stable incremental advantage of Taker Buy Ratio improvement inside the volume-anchor regime is established.
+
+Within the BB target + volume-anchor subset, coverage was even sparser:
+- 2022: n=1 improving vs 3 controls, positive across all horizons.
+- 2026: n=1 improving vs 1 control, positive across all horizons.
+- 2023/2024/2025: no qualifying improving event inside the BB-target+anchor subset.
+This is far too sparse for an OOS interaction claim.
+
+### OOS fixed-condition coverage
+- improving: 2023 n2, 2024 n2, 2025 n8, 2026 n4. Direction varies by year/horizon; 12h is positive in 2023, 2025, 2026 but negative in 2024.
+- anchor + improving: 2025 n1 (+0.051%, -0.188%, -1.752%, -2.925%); 2026 n2 (+0.200%, +0.444%, +0.601%, +1.504%).
+- BB target + anchor + improving: only 2026 n1 (+0.909%, +0.975%, +0.940%, +1.819%).
+
+### Conclusion
+Taker Buy Ratio improvement remains a plausible market-microstructure feature, but the incremental audit does **not** show a stable additional edge after conditioning on the existing volume/BB regime. Further threshold mining is not justified.
+
+**Decision: HOLD / research-only.**
+The historical technical-filter branch is now considered sufficiently explored for the current event definition. Continue Forward Shadow for independent confirmation, and if another historical branch is needed, prefer a genuinely independent feature family (for example derivatives positioning/flow) rather than additional BB/Taker thresholds.
+
+### Research status
+- Frozen event definition: unchanged.
+- Frozen historical denominator: 95.
+- Taker incremental audit: completed and saved.
+- Forward Shadow: continuing independently.
+- Live trading/deployment: not approved; status remains HOLD.
