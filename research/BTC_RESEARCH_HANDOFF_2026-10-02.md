@@ -390,3 +390,23 @@ Funding Rate is a genuinely independent feature family and therefore more inform
 
 **Decision: HOLD / research-only.**
 Do not convert funding state into a live filter yet. Preserve the result and move toward a compact pre-registered interaction test only if it can be done without threshold mining; otherwise prioritize Forward Shadow and independent validation.
+
+
+## Final-gate check — Funding Rate incremental contribution
+Using the already-saved frozen funding-rate event file and BB decomposition event file, an identical-event incremental comparison was completed without any new threshold search.
+
+Inside the existing volume-anchor regime:
+- positive funding n=12: 2/3/6/12h = +0.068%, -0.106%, -1.415%, -1.306%
+- neutral funding n=21: +0.820%, +1.002%, +0.635%, +2.174%
+So positive funding is directionally worse than neutral funding inside the volume-anchor regime, especially at 6/12h. This is consistent with the independent-feature hypothesis, but it is not enough to claim a deployable filter.
+
+Inside the BB target + volume-anchor regime:
+- positive funding n=2: -0.195%, +0.481%, +0.990%, -0.265%
+- neutral funding n=11: +1.417%, +1.592%, +1.816%, +2.987%
+The positive-vs-neutral difference is therefore negative at 2h (-1.61%), 6h (-0.83%), and 12h (-3.25%), but the positive group contains only two events. This is a hypothesis-strengthening observation, not independent OOS proof.
+
+### Final-gate interpretation
+The research now has a coherent multi-source hypothesis: the strongest historical rebound regime is concentrated around lower-BB re-entry + unusually high re-entry volume + relatively flat BB midline/expanding width, while elevated positive futures funding appears to weaken that rebound. However, the funding interaction remains too sparse for promotion.
+
+**No live rule is promoted. Status remains HOLD / research-only.**
+Further historical threshold mining is not justified under the current frozen event definition. The next evidence should come from independent forward observations rather than additional parameter fitting.
