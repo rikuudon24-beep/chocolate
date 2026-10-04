@@ -9,31 +9,30 @@ BASE="https://fapi.binance.com/fapi/v1/fundingRate"
 events=pd.read_csv(R/"taker_buy_ratio_events.csv")[["event_id"]+[f"net_{h}h" for h in H]].merge(pd.read_csv(R/"oos_events.csv")[["event_id","reentry_time"]],on="event_id",how="inner")
 events["reentry_time"]=pd.to_datetime(events["reentry_time"],utc=True)
 rows=[]
+cache={}
 for _,e in events.iterrows():
-    ts=int(e.reentry_time.timestamp()*1000)
-    end=ts+8*60*60*1000
-    try:
-        r=requests.get(BASE,params={"symbol":"BTCUSDT","startTime":ts-24*60*60*1000,"endTime":end,"limit":1000},timeout=20)
-        r.raise_for_status()
-        data=r.json()
-    except Exception as ex:
-        raise RuntimeError(f"funding fetch failed event={e.event_id}: {ex}")
-    if not data:
-        rows.append({"event_id":e.event_id,"funding":float("nan"),"funding_prev":float("nan")})
-        continue
-    f=pd.DataFrame(data)
-    f["fundingTime"]=pd.to_datetime(f["fundingTime"],unit="ms",utc=True)
-    f["fundingRate"]=f["fundingRate"].astype(float)
-    before=f[f.fundingTime<=e.reentry_time]
-    current=before.iloc[-1] if len(before) else f.iloc[0]
+    ts=e.reentry_time
+    key=(ts.year,ts.month)
+    if key not in cache:
+        url=f"https://data.binance.vision/data/futures/um/monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-{ts.year:04d}-{ts.month:02d}.zip"
+        rr=requests.get(url,timeout=30)
+        rr.raise_for_status()
+        from io import BytesIO
+        import zipfile
+        z=zipfile.ZipFile(BytesIO(rr.content))
+        name=z.namelist()[0]
+        cache[key]=pd.read_csv(z.open(name))
+        cache[key]["fundingTime"]=pd.to_datetime(cache[key]["fundingTime"],unit="ms",utc=True)
+        cache[key]["fundingRate"]=cache[key]["fundingRate"].astype(float)
+    f0=cache[key]
+    before=f0[f0.fundingTime<=ts]
+    current=before.iloc[-1] if len(before) else f0.iloc[0]
     prev=before.iloc[-2] if len(before)>=2 else None
     rows.append({
         "event_id":e.event_id,
         "funding":float(current.fundingRate),
         "funding_prev":float(prev.fundingRate) if prev is not None else float("nan")
     })
-    time.sleep(0.05)
-
 f=pd.DataFrame(rows)
 x=events.merge(f,on="event_id",how="left")
 if len(x)!=95: raise RuntimeError(f"merge={len(x)}")
