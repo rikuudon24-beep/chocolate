@@ -27,7 +27,7 @@ for _,e in events.iterrows():
         cache[key]["fundingTime"]=pd.to_datetime(cache[key][time_col],unit="ms",utc=True)
         cache[key]["fundingRate"]=pd.to_numeric(cache[key][rate_col],errors="coerce")
     f0=cache[key]
-    before=f0[f0.fundingTime<=ts]
+    before=f0[f0.fundingTime<ts]
     current=before.iloc[-1] if len(before) else f0.iloc[0]
     prev=before.iloc[-2] if len(before)>=2 else None
     rows.append({
