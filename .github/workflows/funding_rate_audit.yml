@@ -1,0 +1,25 @@
+name: Funding Rate Audit
+on:
+  push:
+    paths:
+      - "src/funding_rate_audit.py"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pandas requests
+      - run: python src/funding_rate_audit.py
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git pull --rebase origin main
+          git add results/funding_rate_*
+          git diff --cached --quiet || (git commit -m "research: funding rate audit" && git push)
