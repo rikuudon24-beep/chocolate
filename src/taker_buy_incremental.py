@@ -48,3 +48,4 @@ print("\nOOS\n",pd.DataFrame(wf).to_string(index=False))
 # trigger
 
 # rerun
+# deterministic incremental audit
