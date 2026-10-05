@@ -58,7 +58,8 @@ def main():
     rows = []
     for _, e in ev.iterrows():
         close = e.reentry_time + pd.Timedelta(hours=4)
-        q = m[m["ts"] <= close]
+        boundary = close - pd.Timedelta(minutes=5) if close >= pd.Timestamp("2026-06-25", tz="UTC") else close
+        q = m[m["ts"] <= boundary]
         if q.empty:
             continue
         r = q.iloc[-1]
