@@ -1,0 +1,25 @@
+name: Open Interest Audit
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "src/open_interest_audit.py"
+      - ".github/workflows/open_interest_audit.yml"
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pandas numpy
+      - run: python src/open_interest_audit.py
+      - name: Commit results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results/open_interest_events.csv results/open_interest_summary.csv
+          git diff --cached --quiet || git commit -m "Add open interest audit results"
+          git push
