@@ -410,3 +410,25 @@ The research now has a coherent multi-source hypothesis: the strongest historica
 
 **No live rule is promoted. Status remains HOLD / research-only.**
 Further historical threshold mining is not justified under the current frozen event definition. The next evidence should come from independent forward observations rather than additional parameter fitting.
+
+
+## Latest independent feature research — Futures Open Interest (OI)
+
+A new independent derivatives-positioning branch was tested using Binance USDⓈ-M BTCUSDT daily public metrics archives. The archive provides native 5-minute open-interest observations. A 2026-06-25 archive-label convention change was explicitly accounted for by shifting the admissible observation boundary back 5 minutes after that date, preventing lookahead from the changed labeling convention.
+
+Frozen event denominator remained 95; OI metrics were available for 86/95 events. Fixed states, with no threshold search:
+- 4h OI falling <= -2%; flat otherwise until +2%; rising >= +2%.
+- 12h OI falling <= -5%; flat otherwise until +5%; rising >= +5%.
+
+Descriptive results after 0.10% RT cost:
+- 4h falling, n=6: +1.384%, +2.929%, +2.062%, +2.785% at 2/3/6/12h; PF 8.61/19.02/8.94/8.25.
+- 4h rising, n=10: -0.396%, -0.758%, -2.011%, -1.361%; PF 0.49/0.39/0.29/0.48.
+- 12h falling, n=14: +0.596%, +0.755%, +0.191%, +0.663%; PF 3.34/2.67/1.14/1.74.
+- 12h flat, n=71: -0.109%, -0.142%, -0.531%, -0.029%.
+- 12h rising, n=1: uninterpretable.
+
+Critical interpretation: OI falling is an interesting lead, especially because OI rising is consistently weak in the 4h grouping, but the positive falling groups are too small for promotion. The earlier `oi_price_context` diagnostic was discarded because it used future net-12h outcome to define the state and is therefore invalid as a predictor.
+
+Next: one fixed incremental OOS interaction test against the existing volume-anchor + BB structural regime, using only pre-entry OI state. If coverage is too sparse, stop historical mining and rely on Forward Shadow.
+
+**Decision: HOLD / research-only. No live rule promoted.**
