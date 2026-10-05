@@ -16,10 +16,7 @@ jobs:
           python-version: "3.11"
       - run: pip install pandas numpy
       - run: python src/open_interest_audit.py
-      - name: Commit results
+      - name: Show results
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add results/open_interest_events.csv results/open_interest_summary.csv
-          git diff --cached --quiet || git commit -m "Add open interest audit results"
-          git push
+          echo 'Open-interest audit completed'
+          cat results/open_interest_summary.csv
