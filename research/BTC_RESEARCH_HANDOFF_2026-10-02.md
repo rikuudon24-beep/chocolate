@@ -432,3 +432,7 @@ Critical interpretation: OI falling is an interesting lead, especially because O
 Next: one fixed incremental OOS interaction test against the existing volume-anchor + BB structural regime, using only pre-entry OI state. If coverage is too sparse, stop historical mining and rely on Forward Shadow.
 
 **Decision: HOLD / research-only. No live rule promoted.**
+
+
+## Pipeline repair — 2026-10-07
+The apparent research stall was traced to GitHub Actions persistence rather than the analysis itself. The Futures OI audit completed its Python analysis successfully, but the final `git push` failed with HTTP 403 because the workflow lacked `contents: write` permission. The OI result files were recovered and preserved. The OI audit workflow was updated to request `permissions: contents: write`; a fixed incremental OI interaction workflow was also added. No historical conclusion was changed by this repair.
