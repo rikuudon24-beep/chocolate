@@ -5,6 +5,8 @@ on:
     paths:
       - "src/open_interest_audit.py"
       - ".github/workflows/open_interest_audit.yml"
+permissions:
+  contents: write
 jobs:
   audit:
     runs-on: ubuntu-latest
