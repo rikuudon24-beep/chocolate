@@ -21,3 +21,4 @@ jobs:
           git add results/open_interest_incremental.csv
           git diff --cached --quiet || git commit -m "Add open interest incremental results"
           git push
+
