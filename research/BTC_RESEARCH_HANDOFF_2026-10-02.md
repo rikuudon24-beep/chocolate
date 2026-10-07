@@ -436,3 +436,48 @@ Next: one fixed incremental OOS interaction test against the existing volume-anc
 
 ## Pipeline repair — 2026-10-07
 The apparent research stall was traced to GitHub Actions persistence rather than the analysis itself. The Futures OI audit completed its Python analysis successfully, but the final `git push` failed with HTTP 403 because the workflow lacked `contents: write` permission. The OI result files were recovered and preserved. The OI audit workflow was updated to request `permissions: contents: write`; a fixed incremental OI interaction workflow was also added. No historical conclusion was changed by this repair.
+
+
+## Handoff update — 2026-10-07: Futures Open Interest branch
+
+### OI audit status
+- Independent feature family: BTCUSDT USDⓈ-M futures Open Interest from Binance public daily metrics archives.
+- Native cadence: 5-minute observations.
+- Frozen spot event denominator: 95 unchanged; OI matched 86/95 events.
+- Information boundary: only OI available after the re-entry candle closed is admissible; no future outcome is used to define predictor states.
+- Fixed states, no threshold search: 4h falling <= -2%, flat otherwise until +2%, rising >= +2%; 12h falling <= -5%, flat otherwise until +5%, rising >= +5%.
+- Cost: 0.10% round trip.
+
+### OI findings
+- 4h falling n=6: +1.384%, +2.929%, +2.062%, +2.785% at 2/3/6/12h; PF 8.61/19.02/8.94/8.25.
+- 4h rising n=10: -0.396%, -0.758%, -2.011%, -1.361%; PF 0.49/0.39/0.29/0.48.
+- 12h falling n=14: +0.596%, +0.755%, +0.191%, +0.663%; PF 3.34/2.67/1.14/1.74.
+- 12h flat n=71: -0.109%, -0.142%, -0.531%, -0.029%.
+- 12h rising n=1: uninterpretable.
+
+Interpretation: falling OI is a potentially useful lead, while rising OI looks consistently weak in the 4h grouping, but samples are too small for promotion. The earlier outcome-derived OI price-context diagnostic was discarded for violating the predictor information boundary.
+
+### Workflow issue and fix
+The OI Python analysis completed successfully, but the first workflow failed only when github-actions attempted to push results, returning HTTP 403. The result files were nevertheless created successfully. The workflow was corrected with repository write permission: permissions.contents=write. Corrected workflow commit: fea6dec195d16c6c5df37ddbd6df53b464dde9fb.
+
+### Current next gate
+A single compact incremental OI interaction test has been added:
+- src/open_interest_incremental.py
+- .github/workflows/open_interest_incremental.yml
+- Tests OI states only inside the existing volume-anchor regime and inside the existing BB-target + volume-anchor regime.
+- Uses already-computed frozen-event outcomes; no new threshold search.
+- If coverage is sparse or results are inconsistent, stop historical OI mining and return to Forward Shadow.
+- Do not add more OI thresholds after this gate.
+
+### Research decision
+**HOLD / research-only. No live rule is promoted.**
+Current leading hypothesis remains lower-BB re-entry + unusually high re-entry volume + relatively flat BB midline / expanding BB width, with elevated positive funding potentially weakening the rebound and falling OI potentially strengthening it. This is a research hypothesis, not a proven profitable system.
+
+### New-chat restart instruction
+1. Read this handoff first.
+2. Check the OI incremental workflow/result.
+3. If successful, evaluate it and append the conclusion here.
+4. If failed, fix the workflow rather than repeating the OI audit.
+5. Do not repeat BB depth/streak/slope/decomposition, Taker Buy Ratio, Funding Rate, or the base OI audit.
+6. After the OI incremental gate, prioritize Forward Shadow and genuinely independent evidence.
+7. Maintain HOLD / research-only unless independent OOS evidence becomes sufficiently strong.
